@@ -62,7 +62,7 @@ public class UsersDaoImpl implements UsersDao {
         }
     }
 
-    @Transactional
+    /*@Transactional
     @Override
     public ArrayList<UsersEntity> searchByName(String name) {
         try {
@@ -82,7 +82,7 @@ public class UsersDaoImpl implements UsersDao {
     @Override
     public boolean checkFriendship(UsersEntity user, UsersEntity friend) {
         return user.getFriends().contains(friend);
-    }
+    }*/
     
     @Transactional
     @Override

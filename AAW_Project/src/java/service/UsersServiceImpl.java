@@ -2,8 +2,11 @@ package service;
 
 import common.Enums.SignInResult;
 import dao.UsersDao;
+import dao.UsersDaoImpl;
 import dao.UsersEntity;
 import java.util.ArrayList;
+import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +51,17 @@ public class UsersServiceImpl implements UsersService {
     
     @Override
     public ArrayList<UsersEntity> searchByName(String name) {
-        return this.usersDao.searchByName(name);
+        try {
+            String sql = "WHERE user.name LIKE '%"+name+"%'" ;
+            
+            return (ArrayList<UsersEntity>) ((UsersDao)this.usersDao).getEm().createQuery(
+                "SELECT user "
+                + "FROM UsersEntity user "
+                + sql)
+                .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     @Override
@@ -63,11 +76,7 @@ public class UsersServiceImpl implements UsersService {
         return SignInResult.SUCCESS;
     }
     
-    @Override
-    public boolean checkFriendship(UsersEntity user, UsersEntity friend) {
-        return this.usersDao.checkFriendship(user, friend);
-    }
-    
+    @Transactional
     @Override
     public boolean addFriendship(UsersEntity user, UsersEntity friend) {
         return this.usersDao.addFriendship(user, friend);
@@ -83,4 +92,11 @@ public class UsersServiceImpl implements UsersService {
         user.setInformation(newInfo);
         this.usersDao.update(user);
     }
+    
+    @Transactional
+    @Override
+    public boolean checkFriendship(UsersEntity user, UsersEntity friend) {
+        return user.getFriends().contains(friend);
+    }
+     
 }
