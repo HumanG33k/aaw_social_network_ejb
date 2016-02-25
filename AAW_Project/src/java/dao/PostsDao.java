@@ -6,6 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -16,6 +17,6 @@ public interface PostsDao {
     public void update(PostsEntity post);
     public void delete(PostsEntity post);
     public PostsEntity find(Long id);
-    public ArrayList<PostsEntity> searchByTarget(UsersEntity target);
-    public ArrayList<PostsEntity> searchBySender(UsersEntity sender);
+    public EntityManager getEm();
+    public void setEm(EntityManager em);
 }

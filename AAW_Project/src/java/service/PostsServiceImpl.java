@@ -9,6 +9,8 @@ import dao.PostsDao;
 import dao.PostsEntity;
 import dao.UsersEntity;
 import java.util.ArrayList;
+import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PostsServiceImpl implements PostsService {
+
     @Autowired
     PostsDao postsDao;
 
@@ -26,24 +29,42 @@ public class PostsServiceImpl implements PostsService {
         PostsEntity post = new PostsEntity(content, sender, target);
         this.postsDao.save(post);
     }
-    
+
     @Override
     public void remove(PostsEntity post) {
         this.postsDao.delete(post);
     }
-    
+
     @Override
     public PostsEntity find(Long id) {
         return this.postsDao.find(id);
     }
-    
+
+    @Transactional
     @Override
     public ArrayList<PostsEntity> searchByTarget(UsersEntity target) {
-        return this.postsDao.searchByTarget(target);
+        try {
+            return (ArrayList<PostsEntity>) this.postsDao.getEm().createQuery(
+                "SELECT post "
+                + "FROM PostsEntity post "
+                + "WHERE post.target = :target")
+                .setParameter("target", target).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-    
+
+    @Transactional
     @Override
     public ArrayList<PostsEntity> searchBySender(UsersEntity sender) {
-        return this.postsDao.searchBySender(sender);
+        try {
+            return (ArrayList<PostsEntity>) this.postsDao.getEm().createQuery(
+                "SELECT post "
+                + "FROM PostsEntity post "
+                + "WHERE post.sender = :sender")
+                .setParameter("sender", sender).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
