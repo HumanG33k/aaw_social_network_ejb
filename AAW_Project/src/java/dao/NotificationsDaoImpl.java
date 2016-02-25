@@ -48,33 +48,48 @@ public class NotificationsDaoImpl implements NotificationsDao {
         return (NotificationsEntity) this.em.find(NotificationsEntity.class, id);
     }
     
-    @Transactional
+//    @Transactional
+//    @Override
+//    public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target) {
+//        try {
+//            return (ArrayList<NotificationsEntity>) this.em.createQuery(
+//                "SELECT notif "
+//                + "FROM NotificationsEntity notif "
+//                + "WHERE notif.target = :target")
+//                .setParameter("target", target).getResultList();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//    }
+//    
+//    @Transactional
+//    @Override
+//    public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target) {
+//        try {
+//            return (NotificationsEntity) this.em.createQuery(
+//                "SELECT notif "
+//                + "FROM NotificationsEntity notif "
+//                + "WHERE notif.sender = :sender "
+//                + "AND notif.target = :target")
+//                .setParameter("sender", sender)
+//                .setParameter("target", target).getSingleResult();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//    }
+//    
+
     @Override
-    public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target) {
-        try {
-            return (ArrayList<NotificationsEntity>) this.em.createQuery(
-                "SELECT notif "
-                + "FROM NotificationsEntity notif "
-                + "WHERE notif.target = :target")
-                .setParameter("target", target).getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
+    public EntityManager getEm() {
+        return em;
     }
+
+    @Override
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+ 
     
-    @Transactional
-    @Override
-    public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target) {
-        try {
-            return (NotificationsEntity) this.em.createQuery(
-                "SELECT notif "
-                + "FROM NotificationsEntity notif "
-                + "WHERE notif.sender = :sender "
-                + "AND notif.target = :target")
-                .setParameter("sender", sender)
-                .setParameter("target", target).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
+    
 }

@@ -9,6 +9,7 @@ import dao.NotificationsDao;
 import dao.NotificationsEntity;
 import dao.UsersEntity;
 import java.util.ArrayList;
+import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,11 +44,29 @@ public class NotificationsServiceImpl implements NotificationsService {
     
     @Override
     public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target) {
-        return this.notifsDao.searchByTarget(target);
+        try {
+            return (ArrayList<NotificationsEntity>) this.notifsDao.getEm().createQuery(
+                "SELECT notif "
+                + "FROM NotificationsEntity notif "
+                + "WHERE notif.target = :target")
+                .setParameter("target", target).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     @Override
     public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target) {
-        return this.notifsDao.searchBySenderTarget(sender, target);
+        try {
+            return (NotificationsEntity) this.notifsDao.getEm().createQuery(
+                "SELECT notif "
+                + "FROM NotificationsEntity notif "
+                + "WHERE notif.sender = :sender "
+                + "AND notif.target = :target")
+                .setParameter("sender", sender)
+                .setParameter("target", target).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
