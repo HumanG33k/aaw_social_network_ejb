@@ -11,11 +11,13 @@ import dao.UsersEntity;
 import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Nath
  */
+@Component
 @Stateless
 public class PostsService implements PostsServiceLocal {
     @EJB

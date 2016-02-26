@@ -10,11 +10,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Nath
  */
+@Component
 @Stateless
 public class UsersDao implements UsersDaoLocal {
     @PersistenceContext(unitName="AAW_Project_EJB-ejbPU")
