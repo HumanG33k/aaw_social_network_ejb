@@ -6,6 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -45,9 +46,9 @@ public class PostsDao implements PostsDaoLocal {
     }
     
     @Override
-    public ArrayList<PostsEntity> searchByTarget(UsersEntity target) {
+    public List<PostsEntity> searchByTarget(UsersEntity target) {
         try {
-            return (ArrayList<PostsEntity>) this.em.createQuery(
+            return (List<PostsEntity>) this.em.createQuery(
                 "SELECT post "
                 + "FROM PostsEntity post "
                 + "WHERE post.target = :target")
@@ -58,9 +59,9 @@ public class PostsDao implements PostsDaoLocal {
     }
     
     @Override
-    public ArrayList<PostsEntity> searchBySender(UsersEntity sender) {
+    public List<PostsEntity> searchBySender(UsersEntity sender) {
         try {
-            return (ArrayList<PostsEntity>) this.em.createQuery(
+            return (List<PostsEntity>) this.em.createQuery(
                 "SELECT post "
                 + "FROM PostsEntity post "
                 + "WHERE post.sender = :sender")

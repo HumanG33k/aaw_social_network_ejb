@@ -5,7 +5,7 @@
  */
 package dao;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -18,6 +18,6 @@ public interface NotificationsDaoLocal {
     public void update(NotificationsEntity notif);
     public void delete(NotificationsEntity notif);
     public NotificationsEntity find(Long id);
-    public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target);
+    public List<NotificationsEntity> searchByTarget(UsersEntity target);
     public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target);
 }

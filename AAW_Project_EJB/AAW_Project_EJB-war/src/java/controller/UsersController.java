@@ -4,8 +4,8 @@ import common.Enums.SignInResult;
 import dao.NotificationsEntity;
 import dao.PostsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -131,7 +131,7 @@ public class UsersController {
         session.setAttribute("currentPage", "/search.htm");
         
         String searchName = request.getParameter("searchName");
-        ArrayList<UsersEntity> users = this.usersService.searchByName(searchName);
+        List<UsersEntity> users = this.usersService.searchByName(searchName);
         ModelAndView mv = new ModelAndView("search");
         UsersEntity user = (UsersEntity) session.getAttribute("user");
         mv.addObject("currentUser", user);
@@ -177,7 +177,7 @@ public class UsersController {
             }
         }
 
-        ArrayList<PostsEntity> posts = this.postsService.searchByTarget(targetUser);
+        List<PostsEntity> posts = this.postsService.searchByTarget(targetUser);
         
         // Add the posts sent by this user
         for(PostsEntity post : this.postsService.searchBySender(targetUser)) {

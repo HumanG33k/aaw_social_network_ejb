@@ -7,7 +7,7 @@ package service;
 
 import dao.PostsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -19,6 +19,6 @@ public interface PostsServiceLocal {
     public void add(String content, UsersEntity sender, UsersEntity target);
     public void remove(PostsEntity post);
     public PostsEntity find(Long id);
-    public ArrayList<PostsEntity> searchByTarget(UsersEntity target);
-    public ArrayList<PostsEntity> searchBySender(UsersEntity sender);
+    public List<PostsEntity> searchByTarget(UsersEntity target);
+    public List<PostsEntity> searchBySender(UsersEntity sender);
 }

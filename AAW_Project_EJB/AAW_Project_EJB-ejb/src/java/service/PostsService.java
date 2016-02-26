@@ -8,7 +8,7 @@ package service;
 import dao.PostsDaoLocal;
 import dao.PostsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.springframework.stereotype.Component;
@@ -40,12 +40,12 @@ public class PostsService implements PostsServiceLocal {
     }
     
     @Override
-    public ArrayList<PostsEntity> searchByTarget(UsersEntity target) {
+    public List<PostsEntity> searchByTarget(UsersEntity target) {
         return this.postsDao.searchByTarget(target);
     }
     
     @Override
-    public ArrayList<PostsEntity> searchBySender(UsersEntity sender) {
+    public List<PostsEntity> searchBySender(UsersEntity sender) {
         return this.postsDao.searchBySender(sender);
     }
 }

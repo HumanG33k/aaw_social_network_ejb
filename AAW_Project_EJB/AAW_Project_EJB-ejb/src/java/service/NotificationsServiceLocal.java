@@ -7,7 +7,7 @@ package service;
 
 import dao.NotificationsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -19,6 +19,6 @@ public interface NotificationsServiceLocal {
     public void add(UsersEntity sender, UsersEntity target);
     public boolean remove(NotificationsEntity notif);
     public NotificationsEntity find(Long id);
-    public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target);
+    public List<NotificationsEntity> searchByTarget(UsersEntity target);
     public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target);
 }

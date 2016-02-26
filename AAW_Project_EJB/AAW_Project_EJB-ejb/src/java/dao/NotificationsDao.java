@@ -5,7 +5,7 @@
  */
 package dao;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -45,9 +45,9 @@ public class NotificationsDao implements NotificationsDaoLocal {
     }
     
     @Override
-    public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target) {
+    public List<NotificationsEntity> searchByTarget(UsersEntity target) {
         try {
-            return (ArrayList<NotificationsEntity>) this.em.createQuery(
+            return (List<NotificationsEntity>) this.em.createQuery(
                 "SELECT notif "
                 + "FROM NotificationsEntity notif "
                 + "WHERE notif.target = :target")

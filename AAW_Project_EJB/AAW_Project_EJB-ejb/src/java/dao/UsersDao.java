@@ -5,7 +5,7 @@
  */
 package dao;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -58,11 +58,11 @@ public class UsersDao implements UsersDaoLocal {
     }
 
     @Override
-    public ArrayList<UsersEntity> searchByName(String name) {
+    public List<UsersEntity> searchByName(String name) {
         try {
             String sql = "WHERE user.name LIKE '%"+name+"%'" ;
             
-            return (ArrayList<UsersEntity>) this.em.createQuery(
+            return (List<UsersEntity>) this.em.createQuery(
                 "SELECT user "
                 + "FROM UsersEntity user "
                 + sql)

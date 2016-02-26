@@ -7,7 +7,7 @@ package controller;
 
 import dao.NotificationsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,7 +42,7 @@ public class NotificationsController {
         
         // Get all the notifications sent to this user
         UsersEntity user = (UsersEntity)session.getAttribute("user");
-        ArrayList<NotificationsEntity> notifs = this.notifsService.searchByTarget(user);
+        List<NotificationsEntity> notifs = this.notifsService.searchByTarget(user);
         ModelAndView mv = new ModelAndView("notifications");
         mv.addObject("currentUser", user);
         mv.addObject("notifs", notifs);

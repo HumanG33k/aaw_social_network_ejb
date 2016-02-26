@@ -7,8 +7,8 @@ package controller;
 
 import dao.PostsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,7 +46,7 @@ public class PostsController {
         
         // Get all the posts sent to this user
         UsersEntity user = (UsersEntity)session.getAttribute("user");
-        ArrayList<PostsEntity> posts = this.postsService.searchByTarget(user);
+        List<PostsEntity> posts = this.postsService.searchByTarget(user);
         
         // Add the posts sent by this user
         for(PostsEntity post : this.postsService.searchBySender(user)) {

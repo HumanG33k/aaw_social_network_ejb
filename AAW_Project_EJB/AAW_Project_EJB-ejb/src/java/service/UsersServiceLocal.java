@@ -7,7 +7,7 @@ package service;
 
 import common.Enums.SignInResult;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -20,7 +20,7 @@ public interface UsersServiceLocal {
     public boolean remove(String name);
     public UsersEntity find(Long id);
     public UsersEntity findByName(String name);
-    public ArrayList<UsersEntity> searchByName(String name);
+    public List<UsersEntity> searchByName(String name);
     public SignInResult checkSignIn(String name, String password);
     public boolean checkFriendship(UsersEntity user, UsersEntity friend);
     public boolean addFriendship(UsersEntity user, UsersEntity friend);

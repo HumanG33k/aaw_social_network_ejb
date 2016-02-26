@@ -8,7 +8,7 @@ package service;
 import dao.NotificationsDaoLocal;
 import dao.NotificationsEntity;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.springframework.stereotype.Component;
@@ -44,7 +44,7 @@ public class NotificationsService implements NotificationsServiceLocal {
     }
     
     @Override
-    public ArrayList<NotificationsEntity> searchByTarget(UsersEntity target) {
+    public List<NotificationsEntity> searchByTarget(UsersEntity target) {
         return this.notifsDao.searchByTarget(target);
     }
     

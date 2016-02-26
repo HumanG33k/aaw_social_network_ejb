@@ -8,7 +8,7 @@ package service;
 import common.Enums.SignInResult;
 import dao.UsersDaoLocal;
 import dao.UsersEntity;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.springframework.stereotype.Component;
@@ -54,7 +54,7 @@ public class UsersService implements UsersServiceLocal {
     }
     
     @Override
-    public ArrayList<UsersEntity> searchByName(String name) {
+    public List<UsersEntity> searchByName(String name) {
         return this.usersDao.searchByName(name);
     }
     
