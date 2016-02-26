@@ -25,13 +25,13 @@ import serviceComposite.UsersServiceCompositeLocal;
  */
 @Controller
 public class UsersController {
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersService")
     UsersServiceLocal usersService;
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersServiceComposite")
     UsersServiceCompositeLocal usersServiceComposite;
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationsService")
     NotificationsServiceLocal notifsService;
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostsService")
     PostsServiceLocal postsService;
 
     // Method used to display the index page

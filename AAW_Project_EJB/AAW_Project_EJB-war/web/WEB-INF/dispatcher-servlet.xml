@@ -31,5 +31,4 @@
     <context:component-scan base-package="serviceComposite"/>
 
     <mvc:annotation-driven />
-    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

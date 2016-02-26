@@ -27,11 +27,11 @@ import service.UsersServiceLocal;
  */
 @Controller
 public class PostsController {
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostsService")
     PostsServiceLocal postsService;
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersService")
     UsersServiceLocal usersService;
-    @EJB
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationsService")
     NotificationsServiceLocal notifsService;
 
     // Method used to show all the posts related to the user
