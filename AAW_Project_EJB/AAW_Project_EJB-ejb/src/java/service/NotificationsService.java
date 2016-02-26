@@ -25,8 +25,10 @@ public class NotificationsService implements NotificationsServiceLocal {
 
     @Override
     public void add(UsersEntity sender, UsersEntity target) {
-        NotificationsEntity notif = new NotificationsEntity(sender, target);
-        this.notifsDao.save(notif);
+        if(this.notifsDao.searchBySenderTarget(sender, target) == null) {
+            NotificationsEntity notif = new NotificationsEntity(sender, target);
+            this.notifsDao.save(notif);
+        }
     }
     
     @Override
@@ -39,8 +41,8 @@ public class NotificationsService implements NotificationsServiceLocal {
     }
     
     @Override
-    public NotificationsEntity find(Long id) {
-        return this.notifsDao.find(id);
+    public NotificationsEntity findById(Long id) {
+        return this.notifsDao.findById(id);
     }
     
     @Override

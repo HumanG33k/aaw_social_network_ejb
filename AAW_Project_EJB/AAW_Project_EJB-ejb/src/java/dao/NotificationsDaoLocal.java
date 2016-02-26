@@ -17,7 +17,7 @@ public interface NotificationsDaoLocal {
     public void save(NotificationsEntity notif);
     public void update(NotificationsEntity notif);
     public void delete(NotificationsEntity notif);
-    public NotificationsEntity find(Long id);
+    public NotificationsEntity findById(Long id);
     public List<NotificationsEntity> searchByTarget(UsersEntity target);
     public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target);
 }

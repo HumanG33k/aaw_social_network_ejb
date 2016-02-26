@@ -31,12 +31,14 @@ public class PostsService implements PostsServiceLocal {
     
     @Override
     public void remove(PostsEntity post) {
-        this.postsDao.delete(post);
+        if(this.postsDao.findById(post.getId()) != null) {
+            this.postsDao.delete(post);
+        }
     }
     
     @Override
-    public PostsEntity find(Long id) {
-        return this.postsDao.find(id);
+    public PostsEntity findById(Long id) {
+        return this.postsDao.findById(id);
     }
     
     @Override

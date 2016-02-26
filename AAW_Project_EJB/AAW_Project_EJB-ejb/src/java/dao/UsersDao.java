@@ -40,7 +40,7 @@ public class UsersDao implements UsersDaoLocal {
     }
 
     @Override
-    public UsersEntity find(Long id) {
+    public UsersEntity findById(Long id) {
         return (UsersEntity) this.em.find(UsersEntity.class, id);
     }
     
@@ -71,32 +71,7 @@ public class UsersDao implements UsersDaoLocal {
             return null;
         }
     }
-    
-    @Override
-    public boolean checkFriendship(UsersEntity user, UsersEntity friend) {
-        return user.getFriends().contains(friend);
-    }
-    
-    @Override
-    public boolean addFriendship(UsersEntity user, UsersEntity friend) {
-        if(user.addFriend(friend) && friend.addFriend(user)) {
-            this.update(user);
-            this.update(friend);
-            return true;
-        }
-        return false;
-    }
-    
-    @Override
-    public boolean removeFriendship(UsersEntity user, UsersEntity friend) {
-        if(user.removeFriend(friend) && friend.removeFriend(user)) {
-            this.update(user);
-            this.update(friend);
-            return true;
-        }
-        return false;
-    }
-    
+
     public EntityManager getEm() { return em; }
     public void setEm(EntityManager em) { this.em = em; }
 }

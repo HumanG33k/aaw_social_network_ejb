@@ -17,10 +17,7 @@ public interface UsersDaoLocal {
     public void save(UsersEntity user);
     public void update(UsersEntity user);
     public void delete(UsersEntity user);
-    public UsersEntity find(Long id);
+    public UsersEntity findById(Long id);
     public UsersEntity findByName(String name);
     public List<UsersEntity> searchByName(String name);
-    public boolean checkFriendship(UsersEntity user, UsersEntity friend);
-    public boolean addFriendship(UsersEntity user, UsersEntity friend);
-    public boolean removeFriendship(UsersEntity user, UsersEntity friend);
 }

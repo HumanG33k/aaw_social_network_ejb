@@ -18,7 +18,7 @@ import javax.ejb.Local;
 public interface PostsServiceLocal {
     public void add(String content, UsersEntity sender, UsersEntity target);
     public void remove(PostsEntity post);
-    public PostsEntity find(Long id);
+    public PostsEntity findById(Long id);
     public List<PostsEntity> searchByTarget(UsersEntity target);
     public List<PostsEntity> searchBySender(UsersEntity sender);
 }

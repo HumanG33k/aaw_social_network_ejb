@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import service.NotificationsServiceLocal;
 import service.PostsServiceLocal;
 import service.UsersServiceLocal;
+import serviceComposite.UsersServiceCompositeLocal;
 
 /**
  *
@@ -26,6 +27,8 @@ import service.UsersServiceLocal;
 public class UsersController {
     @EJB
     UsersServiceLocal usersService;
+    @EJB
+    UsersServiceCompositeLocal usersServiceComposite;
     @EJB
     NotificationsServiceLocal notifsService;
     @EJB
@@ -74,7 +77,7 @@ public class UsersController {
         
         ModelAndView mv;
 
-        SignInResult result = this.usersService.checkSignIn(name, password);
+        SignInResult result = this.usersServiceComposite.checkSignIn(name, password);
         if(result != SignInResult.SUCCESS) {
             mv = new ModelAndView("index");
             if(result == SignInResult.WRONG_USER) {
@@ -152,7 +155,7 @@ public class UsersController {
         session.setAttribute("currentPage", "/" + userId.toString() + "/profile.htm");
         
         UsersEntity user = (UsersEntity) session.getAttribute("user");
-        UsersEntity targetUser = this.usersService.find(userId);
+        UsersEntity targetUser = this.usersService.findById(userId);
         
         ModelAndView mv = new ModelAndView("profile");
         mv.addObject("currentUser", user);
@@ -160,7 +163,7 @@ public class UsersController {
         mv.addObject("nbNotifs", this.notifsService.searchByTarget(user).size());
         boolean isMyProfile = user.equals(targetUser);
         mv.addObject("myProfile", isMyProfile);  
-        boolean isMyFriend = this.usersService.checkFriendship(user, targetUser);
+        boolean isMyFriend = this.usersServiceComposite.checkFriendship(user, targetUser);
         mv.addObject("myFriend", isMyFriend);
         
         if(!isMyProfile && !isMyFriend) {
@@ -203,7 +206,7 @@ public class UsersController {
         UsersEntity user = (UsersEntity) session.getAttribute("user");
         String newInfo = request.getParameter("infoInput");
         if(!newInfo.isEmpty()) {
-            this.usersService.updateInfo(user, newInfo);
+            this.usersServiceComposite.updateInfo(user, newInfo);
         }
 
         return new ModelAndView("redirect:profile.htm");
@@ -218,10 +221,10 @@ public class UsersController {
         }
         
         UsersEntity user = (UsersEntity) session.getAttribute("user");
-        UsersEntity targetUser = this.usersService.find(userId);
+        UsersEntity targetUser = this.usersService.findById(userId);
         
-        if(this.usersService.checkFriendship(user, targetUser)) {
-            this.usersService.removeFriendship(user, targetUser);
+        if(this.usersServiceComposite.checkFriendship(user, targetUser)) {
+            this.usersServiceComposite.removeFriendship(user, targetUser);
         }
 
         return new ModelAndView("redirect:profile.htm");

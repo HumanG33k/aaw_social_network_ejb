@@ -40,7 +40,7 @@ public class NotificationsDao implements NotificationsDaoLocal {
     }
 
     @Override
-    public NotificationsEntity find(Long id) {
+    public NotificationsEntity findById(Long id) {
         return (NotificationsEntity) this.em.find(NotificationsEntity.class, id);
     }
     

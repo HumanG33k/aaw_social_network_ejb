@@ -86,7 +86,7 @@ public class PostsController {
         
         if(!content.isEmpty()) {
             UsersEntity sender = (UsersEntity)session.getAttribute("user");
-            UsersEntity target = this.usersService.find(userId);
+            UsersEntity target = this.usersService.findById(userId);
             this.postsService.add(content, sender, target);
         }
         
@@ -101,7 +101,7 @@ public class PostsController {
             return new ModelAndView("index");
         }
         
-        PostsEntity post = this.postsService.find(postId);
+        PostsEntity post = this.postsService.findById(postId);
         if(post != null) {
             this.postsService.remove(post);
         }

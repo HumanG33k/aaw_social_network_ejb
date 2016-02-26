@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import service.NotificationsServiceLocal;
 import service.UsersServiceLocal;
+import serviceComposite.UsersServiceCompositeLocal;
 
 /**
  *
@@ -29,6 +30,8 @@ public class NotificationsController {
     NotificationsServiceLocal notifsService;
     @EJB
     UsersServiceLocal usersService;
+    @EJB
+    UsersServiceCompositeLocal usersServiceComposite;
     
     // Method used to show all the posts related to the user
     @RequestMapping(value="notifications", method=RequestMethod.GET)
@@ -60,7 +63,7 @@ public class NotificationsController {
         }
         
         UsersEntity user = (UsersEntity) session.getAttribute("user");
-        UsersEntity targetUser = this.usersService.find(userId);
+        UsersEntity targetUser = this.usersService.findById(userId);
         
         this.notifsService.add(user, targetUser);
 
@@ -76,8 +79,8 @@ public class NotificationsController {
         }
         
         UsersEntity user = (UsersEntity) session.getAttribute("user");
-        NotificationsEntity notif = this.notifsService.find(notifId);
-        if(user.equals(notif.getTarget()) && this.usersService.addFriendship(notif.getSender(), user)) {
+        NotificationsEntity notif = this.notifsService.findById(notifId);
+        if(user.equals(notif.getTarget()) && this.usersServiceComposite.addFriendship(notif.getSender(), user)) {
             session.setAttribute("user", user);
         }
         this.notifsService.remove(notif);
@@ -96,7 +99,7 @@ public class NotificationsController {
             return new ModelAndView("index");
         }
 
-        NotificationsEntity notif = this.notifsService.find(notifId);
+        NotificationsEntity notif = this.notifsService.findById(notifId);
         if(notif != null) {
             this.notifsService.remove(notif);
         }

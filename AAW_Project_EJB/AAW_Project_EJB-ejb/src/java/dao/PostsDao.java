@@ -41,7 +41,7 @@ public class PostsDao implements PostsDaoLocal {
     }
 
     @Override
-    public PostsEntity find(Long id) {
+    public PostsEntity findById(Long id) {
         return (PostsEntity) this.em.find(PostsEntity.class, id);
     }
     

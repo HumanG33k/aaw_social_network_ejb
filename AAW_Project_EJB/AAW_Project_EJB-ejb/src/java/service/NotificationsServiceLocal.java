@@ -18,7 +18,7 @@ import javax.ejb.Local;
 public interface NotificationsServiceLocal {
     public void add(UsersEntity sender, UsersEntity target);
     public boolean remove(NotificationsEntity notif);
-    public NotificationsEntity find(Long id);
+    public NotificationsEntity findById(Long id);
     public List<NotificationsEntity> searchByTarget(UsersEntity target);
     public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target);
 }
