@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -18,39 +17,39 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Stateless
-public class NotificationsDao implements NotificationsDaoLocal {
+public class NotificationDao implements NotificationDaoLocal {
     @PersistenceContext(unitName="AAW_Project_EJB-ejbPU")
     private EntityManager em;
     
     @Override
-    public Long save(NotificationsEntity notif) {
+    public Long save(NotificationEntity notif) {
         notif = this.em.merge(notif);
         this.em.persist(notif);
         return notif.getId();
     }
 
     @Override
-    public void update(NotificationsEntity notif) {
+    public void update(NotificationEntity notif) {
         this.em.merge(notif);
     }
 
     @Override
-    public void delete(NotificationsEntity notif) {
+    public void delete(NotificationEntity notif) {
         notif = this.em.merge(notif);
         this.em.remove(notif);
     }
 
     @Override
-    public NotificationsEntity findById(Long id) {
-        return (NotificationsEntity) this.em.find(NotificationsEntity.class, id);
+    public NotificationEntity findById(Long id) {
+        return (NotificationEntity) this.em.find(NotificationEntity.class, id);
     }
 
     @Override
-    public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target) {
+    public NotificationEntity searchBySenderTarget(UserEntity sender, UserEntity target) {
         try {
-            return (NotificationsEntity) this.em.createQuery(
+            return (NotificationEntity) this.em.createQuery(
                 "SELECT notif "
-                + "FROM NotificationsEntity notif "
+                + "FROM NotificationEntity notif "
                 + "WHERE notif.sender = :sender "
                 + "AND notif.target = :target")
                 .setParameter("sender", sender)

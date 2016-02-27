@@ -6,7 +6,7 @@
 package serviceComposite;
 
 import common.Enums.SignInResult;
-import dao.UsersEntity;
+import dao.UserEntity;
 import javax.ejb.Local;
 
 /**
@@ -14,10 +14,10 @@ import javax.ejb.Local;
  * @author Nath
  */
 @Local
-public interface UsersServiceCompositeLocal {
-    public boolean checkFriendship(UsersEntity user, UsersEntity friend);
-    public boolean addFriendship(UsersEntity user, UsersEntity friend);
-    public boolean removeFriendship(UsersEntity user, UsersEntity friend);
+public interface UserServiceCompositeLocal {
+    public boolean checkFriendship(UserEntity user, UserEntity friend);
+    public boolean addFriendship(UserEntity user, UserEntity friend);
+    public boolean removeFriendship(UserEntity user, UserEntity friend);
     public SignInResult checkSignIn(String name, String password);
-    public void updateInfo(UsersEntity user, String newInfo);
+    public void updateInfo(UserEntity user, String newInfo);
 }

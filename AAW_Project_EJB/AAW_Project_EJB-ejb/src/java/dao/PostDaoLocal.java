@@ -12,9 +12,9 @@ import javax.ejb.Local;
  * @author Nath
  */
 @Local
-public interface PostsDaoLocal {
-    public Long save(PostsEntity post);
-    public void update(PostsEntity post);
-    public void delete(PostsEntity post);
-    public PostsEntity findById(Long id);
+public interface PostDaoLocal {
+    public Long save(PostEntity post);
+    public void update(PostEntity post);
+    public void delete(PostEntity post);
+    public PostEntity findById(Long id);
 }

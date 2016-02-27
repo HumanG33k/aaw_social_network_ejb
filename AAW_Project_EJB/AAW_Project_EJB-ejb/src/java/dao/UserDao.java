@@ -18,38 +18,38 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Stateless
-public class UsersDao implements UsersDaoLocal {
+public class UserDao implements UserDaoLocal {
     @PersistenceContext(unitName="AAW_Project_EJB-ejbPU")
     private EntityManager em;
     
     @Override
-    public void save(UsersEntity user) {
+    public void save(UserEntity user) {
         user = this.em.merge(user);
         this.em.persist(user);
     }
 
     @Override
-    public void update(UsersEntity user) {
+    public void update(UserEntity user) {
         this.em.merge(user);
     }
 
     @Override
-    public void delete(UsersEntity user) {
+    public void delete(UserEntity user) {
         user = this.em.merge(user);
         this.em.remove(user);
     }
 
     @Override
-    public UsersEntity findById(Long id) {
-        return (UsersEntity) this.em.find(UsersEntity.class, id);
+    public UserEntity findById(Long id) {
+        return (UserEntity) this.em.find(UserEntity.class, id);
     }
     
     @Override
-    public UsersEntity findByName(String name) {
+    public UserEntity findByName(String name) {
         try {
-            return (UsersEntity) this.em.createQuery(
+            return (UserEntity) this.em.createQuery(
                 "SELECT user "
-                + "FROM UsersEntity user "
+                + "FROM UserEntity user "
                 + "WHERE user.name = :name")
                 .setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
@@ -58,11 +58,11 @@ public class UsersDao implements UsersDaoLocal {
     }
 
     @Override
-    public List<UsersEntity> searchByName(String name) {
+    public List<UserEntity> searchByName(String name) {
         try {
-            return (List<UsersEntity>) this.em.createQuery(
+            return (List<UserEntity>) this.em.createQuery(
                 "SELECT user "
-                + "FROM UsersEntity user "
+                + "FROM UserEntity user "
                 + "WHERE user.name LIKE '%" + name + "%'")
                 .getResultList();
         } catch (NoResultException e) {

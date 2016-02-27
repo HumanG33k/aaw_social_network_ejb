@@ -5,8 +5,8 @@
  */
 package controller;
 
-import dao.PostsEntity;
-import dao.UsersEntity;
+import dao.PostEntity;
+import dao.UserEntity;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,22 +17,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import service.NotificationsServiceLocal;
-import service.PostsServiceLocal;
-import service.UsersServiceLocal;
+import service.NotificationServiceLocal;
+import service.PostServiceLocal;
+import service.UserServiceLocal;
 
 /**
  *
  * @author Nathanael Villemin
  */
 @Controller
-public class PostsController {
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostsService")
-    PostsServiceLocal postsService;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersService")
-    UsersServiceLocal usersService;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationsService")
-    NotificationsServiceLocal notifsService;
+public class PostController {
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostService")
+    PostServiceLocal postService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserService")
+    UserServiceLocal userService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationService")
+    NotificationServiceLocal notifService;
 
     // Method used to show all the posts related to the user
     @RequestMapping(value="home", method=RequestMethod.GET)
@@ -46,19 +46,19 @@ public class PostsController {
         
         // Get all the posts sent to this user
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
-        List<PostsEntity> posts = user.getTargetPosts();
+        UserEntity user = this.userService.findById(sessionUserId);
+        List<PostEntity> posts = user.getTargetPosts();
         
         // Add the posts sent by this user
-        for(PostsEntity post : user.getSenderPosts()) {
+        for(PostEntity post : user.getSenderPosts()) {
             if(!posts.contains(post)) {
                 posts.add(post);
             }
         }
         
         // Add the posts sent by friends
-        for(UsersEntity friend : user.getFriends()) {
-            for(PostsEntity post : friend.getSenderPosts()) {
+        for(UserEntity friend : user.getFriends()) {
+            for(PostEntity post : friend.getSenderPosts()) {
                 if(!posts.contains(post)) {
                     posts.add(post);
                 }
@@ -87,9 +87,9 @@ public class PostsController {
         
         if(!content.isEmpty()) {
             Long sessionUserId = (Long)session.getAttribute("userId");
-            UsersEntity sender = this.usersService.findById(sessionUserId);
-            UsersEntity target = this.usersService.findById(userId);
-            this.postsService.add(content, sender, target);
+            UserEntity sender = this.userService.findById(sessionUserId);
+            UserEntity target = this.userService.findById(userId);
+            this.postService.add(content, sender, target);
         }
         
         return new ModelAndView("redirect:" + session.getAttribute("currentPage"));
@@ -103,9 +103,9 @@ public class PostsController {
             return new ModelAndView("index");
         }
         
-        PostsEntity post = this.postsService.findById(postId);
+        PostEntity post = this.postService.findById(postId);
         if(post != null) {
-            this.postsService.remove(post);
+            this.postService.remove(post);
         }
 
         return new ModelAndView("redirect:" + session.getAttribute("currentPage"));

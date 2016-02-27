@@ -5,8 +5,8 @@
  */
 package controller;
 
-import dao.NotificationsEntity;
-import dao.UsersEntity;
+import dao.NotificationEntity;
+import dao.UserEntity;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import service.NotificationsServiceLocal;
-import service.UsersServiceLocal;
-import serviceComposite.UsersServiceCompositeLocal;
+import service.NotificationServiceLocal;
+import service.UserServiceLocal;
+import serviceComposite.UserServiceCompositeLocal;
 
 /**
  *
  * @author Nathanael Villemin
  */
 @Controller
-public class NotificationsController {
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationsService")
-    NotificationsServiceLocal notifsService;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersService")
-    UsersServiceLocal usersService;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersServiceComposite")
-    UsersServiceCompositeLocal usersServiceComposite;
+public class NotificationController {
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationService")
+    NotificationServiceLocal notifService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserService")
+    UserServiceLocal userService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserServiceComposite")
+    UserServiceCompositeLocal userServiceComposite;
     
     // Method used to show all the posts related to the user
     @RequestMapping(value="notifications", method=RequestMethod.GET)
@@ -45,8 +45,8 @@ public class NotificationsController {
         
         // Get all the notifications sent to this user
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
-        List<NotificationsEntity> notifs = user.getTargetNotifs();
+        UserEntity user = this.userService.findById(sessionUserId);
+        List<NotificationEntity> notifs = user.getTargetNotifs();
         ModelAndView mv = new ModelAndView("notifications");
         mv.addObject("currentUser", user);
         mv.addObject("notifs", notifs);
@@ -64,10 +64,10 @@ public class NotificationsController {
         }
         
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
-        UsersEntity targetUser = this.usersService.findById(userId);
+        UserEntity user = this.userService.findById(sessionUserId);
+        UserEntity targetUser = this.userService.findById(userId);
         
-        this.notifsService.add(user, targetUser);
+        this.notifService.add(user, targetUser);
 
         return new ModelAndView("redirect:profile.htm");
     }
@@ -81,10 +81,11 @@ public class NotificationsController {
         }
         
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
-        NotificationsEntity notif = this.notifsService.findById(notifId);
-        if(user.equals(notif.getTarget()) && this.usersServiceComposite.addFriendship(notif.getSender(), notif.getTarget())) {
-            this.notifsService.remove(notif);
+        UserEntity user = this.userService.findById(sessionUserId);
+        NotificationEntity notif = this.notifService.findById(notifId);
+        UserEntity target = notif.getTarget();
+        if(user.equals(target) && this.userServiceComposite.addFriendship(notif.getSender(), target)) {
+            this.notifService.remove(notif);
         }
 
         ModelAndView mv = new ModelAndView("redirect:" + session.getAttribute("currentPage"));
@@ -101,9 +102,9 @@ public class NotificationsController {
             return new ModelAndView("index");
         }
 
-        NotificationsEntity notif = this.notifsService.findById(notifId);
+        NotificationEntity notif = this.notifService.findById(notifId);
         if(notif != null) {
-            this.notifsService.remove(notif);
+            this.notifService.remove(notif);
         }
         
         return new ModelAndView("redirect:/notifications.htm");

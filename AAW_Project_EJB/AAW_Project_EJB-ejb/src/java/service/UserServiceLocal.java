@@ -5,7 +5,7 @@
  */
 package service;
 
-import dao.UsersEntity;
+import dao.UserEntity;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,10 +14,10 @@ import javax.ejb.Local;
  * @author Nath
  */
 @Local
-public interface UsersServiceLocal {
+public interface UserServiceLocal {
     public boolean add(String name, String email, String password);
     public boolean remove(String name);
-    public UsersEntity findById(Long id);
-    public UsersEntity findByName(String name);
-    public List<UsersEntity> searchByName(String name);
+    public UserEntity findById(Long id);
+    public UserEntity findByName(String name);
+    public List<UserEntity> searchByName(String name);
 }

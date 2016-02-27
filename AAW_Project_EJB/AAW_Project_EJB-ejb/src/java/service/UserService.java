@@ -5,8 +5,8 @@
  */
 package service;
 
-import dao.UsersDaoLocal;
-import dao.UsersEntity;
+import dao.UserDaoLocal;
+import dao.UserEntity;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -18,15 +18,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Stateless
-public class UsersService implements UsersServiceLocal {
+public class UserService implements UserServiceLocal {
     @EJB
-    UsersDaoLocal usersDao;
+    UserDaoLocal userDao;
     
     @Override
     public boolean add(String name, String email, String password) {
-        if(this.usersDao.findByName(name) == null) {
-            UsersEntity user = new UsersEntity(name, email, password);
-            this.usersDao.save(user);
+        if(this.userDao.findByName(name) == null) {
+            UserEntity user = new UserEntity(name, email, password);
+            this.userDao.save(user);
             return true;
         }
         return false;
@@ -34,26 +34,26 @@ public class UsersService implements UsersServiceLocal {
 
     @Override
     public boolean remove(String name) {
-        UsersEntity user = this.usersDao.findByName(name);
+        UserEntity user = this.userDao.findByName(name);
         if(user != null) {
-            this.usersDao.delete(user);
+            this.userDao.delete(user);
             return true;
         }
         return false;
     }
 
     @Override
-    public UsersEntity findById(Long id) {
-        return this.usersDao.findById(id);
+    public UserEntity findById(Long id) {
+        return this.userDao.findById(id);
     }
     
     @Override
-    public UsersEntity findByName(String name) {
-        return this.usersDao.findByName(name);
+    public UserEntity findByName(String name) {
+        return this.userDao.findByName(name);
     }
     
     @Override
-    public List<UsersEntity> searchByName(String name) {
-        return this.usersDao.searchByName(name);
+    public List<UserEntity> searchByName(String name) {
+        return this.userDao.searchByName(name);
     }
 }

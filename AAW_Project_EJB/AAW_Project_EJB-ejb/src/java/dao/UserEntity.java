@@ -24,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
-public class UsersEntity implements Serializable {
+public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,58 +38,58 @@ public class UsersEntity implements Serializable {
     @Column
     private String information;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-    private List<PostsEntity> senderPosts = new ArrayList<>();
+    private List<PostEntity> senderPosts = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
-    private List<PostsEntity> targetPosts = new ArrayList<>();
+    private List<PostEntity> targetPosts = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-    private List<NotificationsEntity> senderNotifs = new ArrayList<>();
+    private List<NotificationEntity> senderNotifs = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
-    private List<NotificationsEntity> targetNotifs = new ArrayList<>();
+    private List<NotificationEntity> targetNotifs = new ArrayList<>();
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<UsersEntity> friends = new ArrayList<>();
+    private List<UserEntity> friends = new ArrayList<>();
 
-    public UsersEntity() {}
+    public UserEntity() {}
     
-    public UsersEntity(String name, String email, String password) {
+    public UserEntity(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.information = "Nothing yet!";
     }
 
-    public void addSenderPost(PostsEntity post) {
+    public void addSenderPost(PostEntity post) {
         this.senderPosts.add(post);
     }
     
-    public void removeSenderPost(PostsEntity post) {
+    public void removeSenderPost(PostEntity post) {
         this.senderPosts.remove(post);
     }
     
-    public void addTargetPost(PostsEntity post) {
+    public void addTargetPost(PostEntity post) {
         this.targetPosts.add(post);
     }
     
-    public void removeTargetPost(PostsEntity post) {
+    public void removeTargetPost(PostEntity post) {
         this.targetPosts.remove(post);
     }
     
-    public void addSenderNotif(NotificationsEntity notif) {
+    public void addSenderNotif(NotificationEntity notif) {
         this.senderNotifs.add(notif);
     }
     
-    public void removeSenderNotif(NotificationsEntity notif) {
+    public void removeSenderNotif(NotificationEntity notif) {
         this.senderNotifs.remove(notif);
     }
     
-    public void addTargetNotif(NotificationsEntity notif) {
+    public void addTargetNotif(NotificationEntity notif) {
         this.targetNotifs.add(notif);
     }
     
-    public void removeTargetNotif(NotificationsEntity notif) {
+    public void removeTargetNotif(NotificationEntity notif) {
         this.targetNotifs.remove(notif);
     }
     
-    public boolean addFriend(UsersEntity friend) {
+    public boolean addFriend(UserEntity friend) {
         if(!this.friends.contains(friend)) {
             this.friends.add(friend);
             return true;
@@ -97,7 +97,7 @@ public class UsersEntity implements Serializable {
         return false;
     }
     
-    public boolean removeFriend(UsersEntity friend) {
+    public boolean removeFriend(UserEntity friend) {
         if(this.friends.contains(friend)) {
             this.friends.remove(friend);
             return true;
@@ -115,10 +115,10 @@ public class UsersEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsersEntity)) {
+        if (!(object instanceof UserEntity)) {
             return false;
         }
-        UsersEntity other = (UsersEntity) object;
+        UserEntity other = (UserEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -127,7 +127,7 @@ public class UsersEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "dao.UsersEntity[ id=" + id + " ]";
+        return "dao.UserEntity[ id=" + id + " ]";
     }
     
     // Getters ands setters
@@ -141,14 +141,14 @@ public class UsersEntity implements Serializable {
     public void setPassword(String password) { this.password = password; }
     public String getInformation() { return information; }
     public void setInformation(String information) { this.information = information; }
-    public List<PostsEntity> getSenderPosts() { return senderPosts; }
-    public void setSenderPosts(List<PostsEntity> senderPosts) { this.senderPosts = senderPosts; }
-    public List<PostsEntity> getTargetPosts() { return targetPosts; }
-    public void setTargetPosts(List<PostsEntity> targetPosts) { this.targetPosts = targetPosts; }
-    public List<NotificationsEntity> getSenderNotifs() { return senderNotifs; }
-    public void setSenderNotifs(List<NotificationsEntity> senderNotifs) { this.senderNotifs = senderNotifs; }
-    public List<NotificationsEntity> getTargetNotifs() { return targetNotifs; }
-    public void setTargetNotifs(List<NotificationsEntity> targetNotifs) { this.targetNotifs = targetNotifs; }
-    public List<UsersEntity> getFriends() { return friends; }
-    public void setFriends(List<UsersEntity> friends) { this.friends = friends; }
+    public List<PostEntity> getSenderPosts() { return senderPosts; }
+    public void setSenderPosts(List<PostEntity> senderPosts) { this.senderPosts = senderPosts; }
+    public List<PostEntity> getTargetPosts() { return targetPosts; }
+    public void setTargetPosts(List<PostEntity> targetPosts) { this.targetPosts = targetPosts; }
+    public List<NotificationEntity> getSenderNotifs() { return senderNotifs; }
+    public void setSenderNotifs(List<NotificationEntity> senderNotifs) { this.senderNotifs = senderNotifs; }
+    public List<NotificationEntity> getTargetNotifs() { return targetNotifs; }
+    public void setTargetNotifs(List<NotificationEntity> targetNotifs) { this.targetNotifs = targetNotifs; }
+    public List<UserEntity> getFriends() { return friends; }
+    public void setFriends(List<UserEntity> friends) { this.friends = friends; }
 }

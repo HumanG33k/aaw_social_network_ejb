@@ -5,8 +5,8 @@
  */
 package service;
 
-import dao.PostsEntity;
-import dao.UsersEntity;
+import dao.PostEntity;
+import dao.UserEntity;
 import javax.ejb.Local;
 
 /**
@@ -14,8 +14,8 @@ import javax.ejb.Local;
  * @author Nath
  */
 @Local
-public interface PostsServiceLocal {
-    public void add(String content, UsersEntity sender, UsersEntity target);
-    public void remove(PostsEntity post);
-    public PostsEntity findById(Long id);
+public interface PostServiceLocal {
+    public void add(String content, UserEntity sender, UserEntity target);
+    public void remove(PostEntity post);
+    public PostEntity findById(Long id);
 }

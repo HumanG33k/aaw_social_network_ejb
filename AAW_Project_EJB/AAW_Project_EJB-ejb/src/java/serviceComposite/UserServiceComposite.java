@@ -6,8 +6,8 @@
 package serviceComposite;
 
 import common.Enums.SignInResult;
-import dao.UsersDaoLocal;
-import dao.UsersEntity;
+import dao.UserDaoLocal;
+import dao.UserEntity;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.springframework.stereotype.Component;
@@ -18,30 +18,30 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Stateless
-public class UsersServiceComposite implements UsersServiceCompositeLocal {
+public class UserServiceComposite implements UserServiceCompositeLocal {
     @EJB
-    UsersDaoLocal usersDao;
+    UserDaoLocal userDao;
     
     @Override
-    public boolean checkFriendship(UsersEntity user, UsersEntity friend) {
+    public boolean checkFriendship(UserEntity user, UserEntity friend) {
         return user.getFriends().contains(friend);
     }
     
     @Override
-    public boolean addFriendship(UsersEntity user, UsersEntity friend) {
+    public boolean addFriendship(UserEntity user, UserEntity friend) {
         if(user.addFriend(friend) && friend.addFriend(user)) {
-            this.usersDao.update(user);
-            this.usersDao.update(friend);
+            this.userDao.update(user);
+            this.userDao.update(friend);
             return true;
         }
         return false;
     }
     
     @Override
-    public boolean removeFriendship(UsersEntity user, UsersEntity friend) {
+    public boolean removeFriendship(UserEntity user, UserEntity friend) {
         if(user.removeFriend(friend) && friend.removeFriend(user)) {
-            this.usersDao.update(user);
-            this.usersDao.update(friend);
+            this.userDao.update(user);
+            this.userDao.update(friend);
             return true;
         }
         return false;
@@ -49,7 +49,7 @@ public class UsersServiceComposite implements UsersServiceCompositeLocal {
     
     @Override
     public SignInResult checkSignIn(String name, String password) {
-        UsersEntity user = this.usersDao.findByName(name);
+        UserEntity user = this.userDao.findByName(name);
         if(user == null) {
             return SignInResult.WRONG_USER;
         }
@@ -60,8 +60,8 @@ public class UsersServiceComposite implements UsersServiceCompositeLocal {
     }
     
     @Override
-    public void updateInfo(UsersEntity user, String newInfo) {
+    public void updateInfo(UserEntity user, String newInfo) {
         user.setInformation(newInfo);
-        this.usersDao.update(user);
+        this.userDao.update(user);
     }
 }

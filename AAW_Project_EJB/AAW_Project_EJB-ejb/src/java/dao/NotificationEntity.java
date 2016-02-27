@@ -6,8 +6,6 @@
 package dao;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,41 +13,32 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
 /**
  *
  * @author Nath
  */
 @Entity
-@Table(name = "posts")
-public class PostsEntity implements Serializable, Comparable<PostsEntity> {
+@Table(name = "notifications")
+public class NotificationEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
-    private String content;
     @ManyToOne
     @JoinColumn(name = "senderId")
-    private UsersEntity sender;
+    private UserEntity sender;
     @ManyToOne
     @JoinColumn(name = "targetId")
-    private UsersEntity target;
-    @Column
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date datePost;
+    private UserEntity target;
 
-    public PostsEntity() {}
-
-    public PostsEntity(String content, UsersEntity sender, UsersEntity target) {
-        this.content = content;
+    public NotificationEntity() {}
+    
+    public NotificationEntity(UserEntity sender, UserEntity target) {
         this.sender = sender;
         this.target = target;
-        this.datePost = new Date();
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -60,10 +49,10 @@ public class PostsEntity implements Serializable, Comparable<PostsEntity> {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PostsEntity)) {
+        if (!(object instanceof NotificationEntity)) {
             return false;
         }
-        PostsEntity other = (PostsEntity) object;
+        NotificationEntity other = (NotificationEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -72,23 +61,14 @@ public class PostsEntity implements Serializable, Comparable<PostsEntity> {
 
     @Override
     public String toString() {
-        return "dao.PostsEntity[ id=" + id + " ]";
-    }
-    
-    @Override
-    public int compareTo(PostsEntity post) {
-        return this.datePost.compareTo(post.getDate());
+        return "dao.NotificationEntity[ id=" + id + " ]";
     }
     
     // Getters ands setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-    public UsersEntity getSender() { return sender; }
-    public void setSender(UsersEntity sender) { this.sender = sender; }
-    public UsersEntity getTarget() { return target; }
-    public void setTarget(UsersEntity target) { this.target = target; }
-    public Date getDate() { return this.datePost; }
-    public void setDate(Date datePost) { this.datePost = datePost; }
+    public UserEntity getSender() { return sender; }
+    public void setSender(UserEntity sender) { this.sender = sender; }
+    public UserEntity getTarget() { return target; }
+    public void setTarget(UserEntity target) { this.target = target; }
 }

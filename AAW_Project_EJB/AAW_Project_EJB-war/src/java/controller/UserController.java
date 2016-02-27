@@ -1,9 +1,9 @@
 package controller;
 
 import common.Enums.SignInResult;
-import dao.NotificationsEntity;
-import dao.PostsEntity;
-import dao.UsersEntity;
+import dao.NotificationEntity;
+import dao.PostEntity;
+import dao.UserEntity;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.EJB;
@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import service.NotificationsServiceLocal;
-import service.PostsServiceLocal;
-import service.UsersServiceLocal;
-import serviceComposite.UsersServiceCompositeLocal;
+import service.NotificationServiceLocal;
+import service.PostServiceLocal;
+import service.UserServiceLocal;
+import serviceComposite.UserServiceCompositeLocal;
 
 /**
  *
  * @author Nathanael Villemin
  */
 @Controller
-public class UsersController {
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersService")
-    UsersServiceLocal usersService;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UsersServiceComposite")
-    UsersServiceCompositeLocal usersServiceComposite;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationsService")
-    NotificationsServiceLocal notifsService;
-    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostsService")
-    PostsServiceLocal postsService;
+public class UserController {
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserService")
+    UserServiceLocal userService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserServiceComposite")
+    UserServiceCompositeLocal userServiceComposite;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationService")
+    NotificationServiceLocal notifService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostService")
+    PostServiceLocal postService;
 
     // Method used to display the index page
     @RequestMapping(value="index", method=RequestMethod.GET)
@@ -57,7 +57,7 @@ public class UsersController {
         } else if(password.length() < 8) {
             mv.addObject("indexMessage", "Error: You password must have at least 8 characters.");
         } else {
-            boolean success = this.usersService.add(name, email, password);
+            boolean success = this.userService.add(name, email, password);
             if(success) {
                 mv.addObject("indexMessage", "You have successfully signed up to the social network. You can now sign in.");
             } else {
@@ -77,7 +77,7 @@ public class UsersController {
         
         ModelAndView mv;
 
-        SignInResult result = this.usersServiceComposite.checkSignIn(name, password);
+        SignInResult result = this.userServiceComposite.checkSignIn(name, password);
         if(result != SignInResult.SUCCESS) {
             mv = new ModelAndView("index");
             if(result == SignInResult.WRONG_USER) {
@@ -90,7 +90,7 @@ public class UsersController {
             
             // Creating the session of the user
             HttpSession session = request.getSession(true);
-            session.setAttribute("userId", this.usersService.findByName(name).getId());
+            session.setAttribute("userId", this.userService.findByName(name).getId());
             session.setMaxInactiveInterval(600); // Inactive after 10 minutes
         }
         
@@ -115,7 +115,7 @@ public class UsersController {
         session.setAttribute("currentPage", "/friends.htm");
         
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
+        UserEntity user = this.userService.findById(sessionUserId);
         ModelAndView mv = new ModelAndView("friends");
         mv.addObject("currentUser", user);
         mv.addObject("friends", user.getFriends());
@@ -135,10 +135,10 @@ public class UsersController {
         session.setAttribute("currentPage", "/search.htm");
         
         String searchName = request.getParameter("searchName");
-        List<UsersEntity> users = this.usersService.searchByName(searchName);
+        List<UserEntity> users = this.userService.searchByName(searchName);
         ModelAndView mv = new ModelAndView("search");
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
+        UserEntity user = this.userService.findById(sessionUserId);
         mv.addObject("currentUser", user);
         mv.addObject("users", users);
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
@@ -157,8 +157,8 @@ public class UsersController {
         session.setAttribute("currentPage", "/" + userId.toString() + "/profile.htm");
         
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
-        UsersEntity targetUser = this.usersService.findById(userId);
+        UserEntity user = this.userService.findById(sessionUserId);
+        UserEntity targetUser = this.userService.findById(userId);
         
         ModelAndView mv = new ModelAndView("profile");
         mv.addObject("currentUser", user);
@@ -166,15 +166,15 @@ public class UsersController {
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
         boolean isMyProfile = user.equals(targetUser);
         mv.addObject("myProfile", isMyProfile);  
-        boolean isMyFriend = this.usersServiceComposite.checkFriendship(user, targetUser);
+        boolean isMyFriend = this.userServiceComposite.checkFriendship(user, targetUser);
         mv.addObject("myFriend", isMyFriend);
         
         if(!isMyProfile && !isMyFriend) {
-            NotificationsEntity sentRequest = this.notifsService.searchBySenderTarget(user, targetUser);
+            NotificationEntity sentRequest = this.notifService.searchBySenderTarget(user, targetUser);
             boolean requestSent = (sentRequest != null);
             mv.addObject("requestSent", requestSent);
             if(!requestSent) {
-                NotificationsEntity receivedRequest = this.notifsService.searchBySenderTarget(targetUser, user);
+                NotificationEntity receivedRequest = this.notifService.searchBySenderTarget(targetUser, user);
                 boolean requestReceived = (receivedRequest != null);
                 mv.addObject("requestReceived", requestReceived);
                 if(requestReceived) {
@@ -183,10 +183,10 @@ public class UsersController {
             }
         }
 
-        List<PostsEntity> posts = targetUser.getTargetPosts();
+        List<PostEntity> posts = targetUser.getTargetPosts();
         
         // Add the posts sent by this user
-        for(PostsEntity post : targetUser.getSenderPosts()) {
+        for(PostEntity post : targetUser.getSenderPosts()) {
             if(!posts.contains(post)) {
                 posts.add(post);
             }
@@ -207,10 +207,10 @@ public class UsersController {
         }
         
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
+        UserEntity user = this.userService.findById(sessionUserId);
         String newInfo = request.getParameter("infoInput");
         if(!newInfo.isEmpty()) {
-            this.usersServiceComposite.updateInfo(user, newInfo);
+            this.userServiceComposite.updateInfo(user, newInfo);
         }
 
         return new ModelAndView("redirect:profile.htm");
@@ -225,11 +225,11 @@ public class UsersController {
         }
         
         Long sessionUserId = (Long)session.getAttribute("userId");
-        UsersEntity user = this.usersService.findById(sessionUserId);
-        UsersEntity targetUser = this.usersService.findById(userId);
+        UserEntity user = this.userService.findById(sessionUserId);
+        UserEntity targetUser = this.userService.findById(userId);
         
-        if(this.usersServiceComposite.checkFriendship(user, targetUser)) {
-            this.usersServiceComposite.removeFriendship(user, targetUser);
+        if(this.userServiceComposite.checkFriendship(user, targetUser)) {
+            this.userServiceComposite.removeFriendship(user, targetUser);
         }
 
         return new ModelAndView("redirect:profile.htm");

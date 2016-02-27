@@ -3,9 +3,9 @@
   <persistence-unit name="AAW_Project_EJB-ejbPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/AAW_Project_EJB_Source</jta-data-source>
-    <class>dao.NotificationsEntity</class>
-    <class>dao.PostsEntity</class>
-    <class>dao.UsersEntity</class>
+    <class>dao.NotificationEntity</class>
+    <class>dao.PostEntity</class>
+    <class>dao.UserEntity</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

@@ -16,31 +16,31 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Stateless
-public class PostsDao implements PostsDaoLocal {
+public class PostDao implements PostDaoLocal {
     @PersistenceContext(unitName="AAW_Project_EJB-ejbPU")
     private EntityManager em;
     
     @Override
-    public Long save(PostsEntity post) {
+    public Long save(PostEntity post) {
         post = this.em.merge(post);
         this.em.persist(post);
         return post.getId();
     }
 
     @Override
-    public void update(PostsEntity post) {
+    public void update(PostEntity post) {
         this.em.merge(post);
     }
 
     @Override
-    public void delete(PostsEntity post) {
+    public void delete(PostEntity post) {
         post = this.em.merge(post);
         this.em.remove(post);
     }
 
     @Override
-    public PostsEntity findById(Long id) {
-        return (PostsEntity) this.em.find(PostsEntity.class, id);
+    public PostEntity findById(Long id) {
+        return (PostEntity) this.em.find(PostEntity.class, id);
     }
 
     public EntityManager getEm() { return em; }
