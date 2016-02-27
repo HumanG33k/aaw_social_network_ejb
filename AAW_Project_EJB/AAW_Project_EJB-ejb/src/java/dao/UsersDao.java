@@ -60,12 +60,10 @@ public class UsersDao implements UsersDaoLocal {
     @Override
     public List<UsersEntity> searchByName(String name) {
         try {
-            String sql = "WHERE user.name LIKE '%"+name+"%'" ;
-            
             return (List<UsersEntity>) this.em.createQuery(
                 "SELECT user "
                 + "FROM UsersEntity user "
-                + sql)
+                + "WHERE user.name LIKE '%" + name + "%'")
                 .getResultList();
         } catch (NoResultException e) {
             return null;

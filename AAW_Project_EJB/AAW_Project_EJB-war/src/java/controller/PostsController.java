@@ -45,11 +45,12 @@ public class PostsController {
         session.setAttribute("currentPage", "/home.htm");
         
         // Get all the posts sent to this user
-        UsersEntity user = (UsersEntity)session.getAttribute("user");
-        List<PostsEntity> posts = this.postsService.searchByTarget(user);
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
+        List<PostsEntity> posts = user.getTargetPosts();
         
         // Add the posts sent by this user
-        for(PostsEntity post : this.postsService.searchBySender(user)) {
+        for(PostsEntity post : user.getSenderPosts()) {
             if(!posts.contains(post)) {
                 posts.add(post);
             }
@@ -57,7 +58,7 @@ public class PostsController {
         
         // Add the posts sent by friends
         for(UsersEntity friend : user.getFriends()) {
-            for(PostsEntity post : this.postsService.searchBySender(friend)) {
+            for(PostsEntity post : friend.getSenderPosts()) {
                 if(!posts.contains(post)) {
                     posts.add(post);
                 }
@@ -69,7 +70,7 @@ public class PostsController {
         ModelAndView mv = new ModelAndView("home");
         mv.addObject("currentUser", user);
         mv.addObject("posts", posts);
-        mv.addObject("nbNotifs", this.notifsService.searchByTarget(user).size());
+        mv.addObject("nbNotifs", user.getTargetNotifs().size());
         
         return mv;
     }
@@ -85,7 +86,8 @@ public class PostsController {
         String content = request.getParameter("postContent");
         
         if(!content.isEmpty()) {
-            UsersEntity sender = (UsersEntity)session.getAttribute("user");
+            Long sessionUserId = (Long)session.getAttribute("userId");
+            UsersEntity sender = this.usersService.findById(sessionUserId);
             UsersEntity target = this.usersService.findById(userId);
             this.postsService.add(content, sender, target);
         }

@@ -26,10 +26,10 @@ public class NotificationsEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "sender")
+    @JoinColumn(name = "senderId")
     private UsersEntity sender;
     @ManyToOne
-    @JoinColumn(name = "target")
+    @JoinColumn(name = "targetId")
     private UsersEntity target;
 
     public NotificationsEntity() {}

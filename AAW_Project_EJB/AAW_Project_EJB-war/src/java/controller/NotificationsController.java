@@ -44,8 +44,9 @@ public class NotificationsController {
         session.setAttribute("currentPage", "/notifications.htm");
         
         // Get all the notifications sent to this user
-        UsersEntity user = (UsersEntity)session.getAttribute("user");
-        List<NotificationsEntity> notifs = this.notifsService.searchByTarget(user);
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
+        List<NotificationsEntity> notifs = user.getTargetNotifs();
         ModelAndView mv = new ModelAndView("notifications");
         mv.addObject("currentUser", user);
         mv.addObject("notifs", notifs);
@@ -62,7 +63,8 @@ public class NotificationsController {
             return new ModelAndView("index");
         }
         
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         UsersEntity targetUser = this.usersService.findById(userId);
         
         this.notifsService.add(user, targetUser);
@@ -78,15 +80,15 @@ public class NotificationsController {
             return new ModelAndView("index");
         }
         
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         NotificationsEntity notif = this.notifsService.findById(notifId);
-        if(user.equals(notif.getTarget()) && this.usersServiceComposite.addFriendship(notif.getSender(), user)) {
-            session.setAttribute("user", user);
+        if(user.equals(notif.getTarget()) && this.usersServiceComposite.addFriendship(notif.getSender(), notif.getTarget())) {
+            this.notifsService.remove(notif);
         }
-        this.notifsService.remove(notif);
 
         ModelAndView mv = new ModelAndView("redirect:" + session.getAttribute("currentPage"));
-        mv.addObject("currentUser", (UsersEntity) session.getAttribute("user"));
+        mv.addObject("currentUser", user);
         
         return mv;
     }

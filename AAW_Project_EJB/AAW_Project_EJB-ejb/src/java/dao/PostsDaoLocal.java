@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -14,10 +13,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface PostsDaoLocal {
-    public void save(PostsEntity post);
+    public Long save(PostsEntity post);
     public void update(PostsEntity post);
     public void delete(PostsEntity post);
     public PostsEntity findById(Long id);
-    public List<PostsEntity> searchByTarget(UsersEntity target);
-    public List<PostsEntity> searchBySender(UsersEntity sender);
 }

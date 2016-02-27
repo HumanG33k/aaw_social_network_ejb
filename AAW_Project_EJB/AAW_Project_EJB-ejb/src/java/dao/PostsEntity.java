@@ -32,10 +32,10 @@ public class PostsEntity implements Serializable, Comparable<PostsEntity> {
     @Column
     private String content;
     @ManyToOne
-    @JoinColumn(name = "sender")
+    @JoinColumn(name = "senderId")
     private UsersEntity sender;
     @ManyToOne
-    @JoinColumn(name = "target")
+    @JoinColumn(name = "targetId")
     private UsersEntity target;
     @Column
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)

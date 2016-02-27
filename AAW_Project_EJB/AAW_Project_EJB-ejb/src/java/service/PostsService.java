@@ -7,8 +7,8 @@ package service;
 
 import dao.PostsDaoLocal;
 import dao.PostsEntity;
+import dao.UsersDaoLocal;
 import dao.UsersEntity;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.springframework.stereotype.Component;
@@ -22,32 +22,34 @@ import org.springframework.stereotype.Component;
 public class PostsService implements PostsServiceLocal {
     @EJB
     PostsDaoLocal postsDao;
+    @EJB
+    UsersDaoLocal usersDao;
 
     @Override
     public void add(String content, UsersEntity sender, UsersEntity target) {
         PostsEntity post = new PostsEntity(content, sender, target);
-        this.postsDao.save(post);
+        post.setId(this.postsDao.save(post));
+        sender.addSenderPost(post);
+        this.usersDao.update(sender);
+        target.addTargetPost(post);
+        this.usersDao.update(target);
     }
     
     @Override
     public void remove(PostsEntity post) {
         if(this.postsDao.findById(post.getId()) != null) {
             this.postsDao.delete(post);
+            UsersEntity sender = post.getSender();
+            sender.removeSenderPost(post);
+            this.usersDao.update(sender);
+            UsersEntity target = post.getTarget();
+            target.removeTargetPost(post);
+            this.usersDao.update(target);
         }
     }
     
     @Override
     public PostsEntity findById(Long id) {
         return this.postsDao.findById(id);
-    }
-    
-    @Override
-    public List<PostsEntity> searchByTarget(UsersEntity target) {
-        return this.postsDao.searchByTarget(target);
-    }
-    
-    @Override
-    public List<PostsEntity> searchBySender(UsersEntity sender) {
-        return this.postsDao.searchBySender(sender);
     }
 }

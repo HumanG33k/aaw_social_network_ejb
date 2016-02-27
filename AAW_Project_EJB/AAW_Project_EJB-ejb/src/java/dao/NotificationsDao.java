@@ -23,9 +23,10 @@ public class NotificationsDao implements NotificationsDaoLocal {
     private EntityManager em;
     
     @Override
-    public void save(NotificationsEntity notif) {
+    public Long save(NotificationsEntity notif) {
         notif = this.em.merge(notif);
         this.em.persist(notif);
+        return notif.getId();
     }
 
     @Override
@@ -43,20 +44,7 @@ public class NotificationsDao implements NotificationsDaoLocal {
     public NotificationsEntity findById(Long id) {
         return (NotificationsEntity) this.em.find(NotificationsEntity.class, id);
     }
-    
-    @Override
-    public List<NotificationsEntity> searchByTarget(UsersEntity target) {
-        try {
-            return (List<NotificationsEntity>) this.em.createQuery(
-                "SELECT notif "
-                + "FROM NotificationsEntity notif "
-                + "WHERE notif.target = :target")
-                .setParameter("target", target).getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-    
+
     @Override
     public NotificationsEntity searchBySenderTarget(UsersEntity sender, UsersEntity target) {
         try {
@@ -71,4 +59,7 @@ public class NotificationsDao implements NotificationsDaoLocal {
             return null;
         }
     }
+    
+    public EntityManager getEm() { return em; }
+    public void setEm(EntityManager em) { this.em = em; }
 }

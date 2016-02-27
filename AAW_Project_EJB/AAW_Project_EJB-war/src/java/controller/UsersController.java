@@ -90,7 +90,7 @@ public class UsersController {
             
             // Creating the session of the user
             HttpSession session = request.getSession(true);
-            session.setAttribute("user", this.usersService.findByName(name));
+            session.setAttribute("userId", this.usersService.findByName(name).getId());
             session.setMaxInactiveInterval(600); // Inactive after 10 minutes
         }
         
@@ -114,11 +114,12 @@ public class UsersController {
         
         session.setAttribute("currentPage", "/friends.htm");
         
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         ModelAndView mv = new ModelAndView("friends");
         mv.addObject("currentUser", user);
         mv.addObject("friends", user.getFriends());
-        mv.addObject("nbNotifs", this.notifsService.searchByTarget(user).size());
+        mv.addObject("nbNotifs", user.getTargetNotifs().size());
         
         return mv;
     }
@@ -136,10 +137,11 @@ public class UsersController {
         String searchName = request.getParameter("searchName");
         List<UsersEntity> users = this.usersService.searchByName(searchName);
         ModelAndView mv = new ModelAndView("search");
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         mv.addObject("currentUser", user);
         mv.addObject("users", users);
-        mv.addObject("nbNotifs", this.notifsService.searchByTarget(user).size());
+        mv.addObject("nbNotifs", user.getTargetNotifs().size());
 
         return mv;
     }
@@ -154,13 +156,14 @@ public class UsersController {
         
         session.setAttribute("currentPage", "/" + userId.toString() + "/profile.htm");
         
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         UsersEntity targetUser = this.usersService.findById(userId);
         
         ModelAndView mv = new ModelAndView("profile");
         mv.addObject("currentUser", user);
         mv.addObject("user", targetUser);
-        mv.addObject("nbNotifs", this.notifsService.searchByTarget(user).size());
+        mv.addObject("nbNotifs", user.getTargetNotifs().size());
         boolean isMyProfile = user.equals(targetUser);
         mv.addObject("myProfile", isMyProfile);  
         boolean isMyFriend = this.usersServiceComposite.checkFriendship(user, targetUser);
@@ -180,10 +183,10 @@ public class UsersController {
             }
         }
 
-        List<PostsEntity> posts = this.postsService.searchByTarget(targetUser);
+        List<PostsEntity> posts = targetUser.getTargetPosts();
         
         // Add the posts sent by this user
-        for(PostsEntity post : this.postsService.searchBySender(targetUser)) {
+        for(PostsEntity post : targetUser.getSenderPosts()) {
             if(!posts.contains(post)) {
                 posts.add(post);
             }
@@ -203,7 +206,8 @@ public class UsersController {
             return new ModelAndView("index");
         }
         
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         String newInfo = request.getParameter("infoInput");
         if(!newInfo.isEmpty()) {
             this.usersServiceComposite.updateInfo(user, newInfo);
@@ -220,7 +224,8 @@ public class UsersController {
             return new ModelAndView("index");
         }
         
-        UsersEntity user = (UsersEntity) session.getAttribute("user");
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        UsersEntity user = this.usersService.findById(sessionUserId);
         UsersEntity targetUser = this.usersService.findById(userId);
         
         if(this.usersServiceComposite.checkFriendship(user, targetUser)) {

@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -36,6 +37,14 @@ public class UsersEntity implements Serializable {
     private String password;
     @Column
     private String information;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
+    private List<PostsEntity> senderPosts = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
+    private List<PostsEntity> targetPosts = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
+    private List<NotificationsEntity> senderNotifs = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
+    private List<NotificationsEntity> targetNotifs = new ArrayList<>();
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UsersEntity> friends = new ArrayList<>();
 
@@ -48,6 +57,38 @@ public class UsersEntity implements Serializable {
         this.information = "Nothing yet!";
     }
 
+    public void addSenderPost(PostsEntity post) {
+        this.senderPosts.add(post);
+    }
+    
+    public void removeSenderPost(PostsEntity post) {
+        this.senderPosts.remove(post);
+    }
+    
+    public void addTargetPost(PostsEntity post) {
+        this.targetPosts.add(post);
+    }
+    
+    public void removeTargetPost(PostsEntity post) {
+        this.targetPosts.remove(post);
+    }
+    
+    public void addSenderNotif(NotificationsEntity notif) {
+        this.senderNotifs.add(notif);
+    }
+    
+    public void removeSenderNotif(NotificationsEntity notif) {
+        this.senderNotifs.remove(notif);
+    }
+    
+    public void addTargetNotif(NotificationsEntity notif) {
+        this.targetNotifs.add(notif);
+    }
+    
+    public void removeTargetNotif(NotificationsEntity notif) {
+        this.targetNotifs.remove(notif);
+    }
+    
     public boolean addFriend(UsersEntity friend) {
         if(!this.friends.contains(friend)) {
             this.friends.add(friend);
@@ -100,6 +141,14 @@ public class UsersEntity implements Serializable {
     public void setPassword(String password) { this.password = password; }
     public String getInformation() { return information; }
     public void setInformation(String information) { this.information = information; }
+    public List<PostsEntity> getSenderPosts() { return senderPosts; }
+    public void setSenderPosts(List<PostsEntity> senderPosts) { this.senderPosts = senderPosts; }
+    public List<PostsEntity> getTargetPosts() { return targetPosts; }
+    public void setTargetPosts(List<PostsEntity> targetPosts) { this.targetPosts = targetPosts; }
+    public List<NotificationsEntity> getSenderNotifs() { return senderNotifs; }
+    public void setSenderNotifs(List<NotificationsEntity> senderNotifs) { this.senderNotifs = senderNotifs; }
+    public List<NotificationsEntity> getTargetNotifs() { return targetNotifs; }
+    public void setTargetNotifs(List<NotificationsEntity> targetNotifs) { this.targetNotifs = targetNotifs; }
     public List<UsersEntity> getFriends() { return friends; }
     public void setFriends(List<UsersEntity> friends) { this.friends = friends; }
 }

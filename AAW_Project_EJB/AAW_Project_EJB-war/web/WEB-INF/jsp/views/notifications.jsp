@@ -21,7 +21,7 @@
             <p>Notifications</p>
         </div>
 
-        <div class="rows ">
+        <div class="rows">
             <div class="row small-uncollapse large-collapse">
                 <c:choose>
                 <c:when test="${notifs.size() == 0}">
@@ -34,7 +34,7 @@
                         <div class="column media-object">
                             <div class="media-object-section left">
                                 <div class="thumbnail ">
-                                    <img src= "resources/img/profile.jpg" class="profile_picture">
+                                    <img src= "resources/img/profile.png" class="profile_picture">
                                 </div>
                             </div>
                             <div class="media-object-section">

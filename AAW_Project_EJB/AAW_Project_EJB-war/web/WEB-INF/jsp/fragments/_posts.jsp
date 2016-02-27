@@ -4,7 +4,7 @@
             <img src= "${pageContext.request.contextPath}/resources/img/profile.png" >
         </div>
 
-        <form method="post" action="${pageContext.request.contextPath}/${user.getId()}/createPost.htm">
+        <form method="post" action="${pageContext.request.contextPath}/${userId}/createPost.htm">
             <div class="column medium-11">
                 <label>
                     <input type="text" placeholder="Express yourself" name="postContent">

@@ -5,11 +5,8 @@
  */
 package dao;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +21,10 @@ public class PostsDao implements PostsDaoLocal {
     private EntityManager em;
     
     @Override
-    public void save(PostsEntity post) {
+    public Long save(PostsEntity post) {
         post = this.em.merge(post);
         this.em.persist(post);
+        return post.getId();
     }
 
     @Override
@@ -44,33 +42,7 @@ public class PostsDao implements PostsDaoLocal {
     public PostsEntity findById(Long id) {
         return (PostsEntity) this.em.find(PostsEntity.class, id);
     }
-    
-    @Override
-    public List<PostsEntity> searchByTarget(UsersEntity target) {
-        try {
-            return (List<PostsEntity>) this.em.createQuery(
-                "SELECT post "
-                + "FROM PostsEntity post "
-                + "WHERE post.target = :target")
-                .setParameter("target", target).getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-    
-    @Override
-    public List<PostsEntity> searchBySender(UsersEntity sender) {
-        try {
-            return (List<PostsEntity>) this.em.createQuery(
-                "SELECT post "
-                + "FROM PostsEntity post "
-                + "WHERE post.sender = :sender")
-                .setParameter("sender", sender).getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-    
+
     public EntityManager getEm() { return em; }
     public void setEm(EntityManager em) { this.em = em; }
 }
