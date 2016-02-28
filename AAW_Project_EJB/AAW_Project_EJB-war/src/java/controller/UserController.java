@@ -4,8 +4,8 @@ import common.Enums.SignInResult;
 import dao.NotificationEntity;
 import dao.PostEntity;
 import dao.UserEntity;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -105,7 +105,7 @@ public class UserController {
     @RequestMapping(value="signOut", method=RequestMethod.GET)
     public ModelAndView handleSignOut(HttpServletRequest request) {
         request.getSession().invalidate();
-        return this.handleIndex(request);
+        return new ModelAndView("redirect:index.htm");
     }
     
     // Method used to show the user friends
@@ -199,15 +199,11 @@ public class UserController {
             }
         }
         
-        // TODO: Fix this, doesn't sort
-        Collections.sort(posts, new Comparator<PostEntity>() {
-            @Override
-            public int compare(PostEntity p1, PostEntity p2) {
-                return -(p1.getDate().compareTo(p2.getDate()));
-            }
-        });
+        List<PostEntity> tempPosts = new ArrayList<>();
+        tempPosts.addAll(posts);
+        Collections.sort(tempPosts, Collections.reverseOrder());
         
-        mv.addObject("posts", posts);
+        mv.addObject("posts", tempPosts);
         
         return mv;
     }

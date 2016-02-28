@@ -23,7 +23,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "posts")
-public class PostEntity implements Serializable {
+public class PostEntity implements Serializable, Comparable<PostEntity>  {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -73,6 +73,11 @@ public class PostEntity implements Serializable {
     @Override
     public String toString() {
         return "dao.PostEntity[ id=" + id + " ]";
+    }
+    
+    @Override
+    public int compareTo(PostEntity post) {
+        return this.datePost.compareTo(post.getDate());
     }
     
     // Getters ands setters

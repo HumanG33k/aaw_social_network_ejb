@@ -7,9 +7,7 @@ package controller;
 
 import dao.MessageEntity;
 import dao.UserEntity;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
@@ -71,13 +69,7 @@ public class MessageController {
                 this.messageServiceComposite.readMessage(message, user);
             }
             
-            // TODO: Fix this, doesn't sort
-            Collections.sort(messages, new Comparator<MessageEntity>() {
-                @Override
-                public int compare(MessageEntity m1, MessageEntity m2) {
-                    return -(m1.getDate().compareTo(m2.getDate()));
-                }
-            });
+            Collections.sort(messages, Collections.reverseOrder());
             
             mv.addObject("showFriends", false);
             mv.addObject("friend", friend);
