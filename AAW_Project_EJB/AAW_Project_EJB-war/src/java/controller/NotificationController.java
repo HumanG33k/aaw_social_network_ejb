@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import service.NotificationServiceLocal;
 import service.UserServiceLocal;
+import serviceComposite.MessageServiceCompositeLocal;
 import serviceComposite.UserServiceCompositeLocal;
 
 /**
@@ -32,6 +33,8 @@ public class NotificationController {
     UserServiceLocal userService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserServiceComposite")
     UserServiceCompositeLocal userServiceComposite;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/MessageServiceComposite")
+    MessageServiceCompositeLocal messageServiceComposite;
     
     // Method used to show all the posts related to the user
     @RequestMapping(value="notifications", method=RequestMethod.GET)
@@ -51,6 +54,7 @@ public class NotificationController {
         mv.addObject("currentUser", user);
         mv.addObject("notifs", notifs);
         mv.addObject("nbNotifs", notifs.size());
+        mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
         
         return mv;
     }

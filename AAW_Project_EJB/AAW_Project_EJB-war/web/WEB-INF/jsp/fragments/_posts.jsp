@@ -12,7 +12,7 @@
             </div>
 
             <div class="column">
-                <button type="submit" class="button expanded">Send a message</button>
+                <button type="submit" class="button expanded">Send a public message</button>
             </div>
         </form>
     </div>

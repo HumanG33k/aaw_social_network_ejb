@@ -22,6 +22,14 @@
                     <li><a style="font-weight: bold" href="<%=request.getContextPath()%>/notifications.htm">Notifications (${nbNotifs})</a></li>
                     </c:otherwise>
                 </c:choose>
+                <c:choose>
+                    <c:when test="${nbMessages == 0}">
+                        <li><a href="<%=request.getContextPath()%>/0/messages.htm">Messages</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a style="font-weight: bold" href="<%=request.getContextPath()%>/0/messages.htm">Messages (${nbMessages})</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
            

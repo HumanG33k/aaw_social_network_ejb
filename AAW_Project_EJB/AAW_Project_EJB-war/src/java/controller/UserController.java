@@ -5,6 +5,7 @@ import dao.NotificationEntity;
 import dao.PostEntity;
 import dao.UserEntity;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import service.NotificationServiceLocal;
 import service.PostServiceLocal;
 import service.UserServiceLocal;
+import serviceComposite.MessageServiceCompositeLocal;
 import serviceComposite.UserServiceCompositeLocal;
 
 /**
@@ -33,6 +35,8 @@ public class UserController {
     NotificationServiceLocal notifService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostService")
     PostServiceLocal postService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/MessageServiceComposite")
+    MessageServiceCompositeLocal messageServiceComposite;
 
     // Method used to display the index page
     @RequestMapping(value="index", method=RequestMethod.GET)
@@ -120,6 +124,7 @@ public class UserController {
         mv.addObject("currentUser", user);
         mv.addObject("friends", user.getFriends());
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
+        mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
         
         return mv;
     }
@@ -142,6 +147,7 @@ public class UserController {
         mv.addObject("currentUser", user);
         mv.addObject("users", users);
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
+        mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
 
         return mv;
     }
@@ -164,6 +170,7 @@ public class UserController {
         mv.addObject("currentUser", user);
         mv.addObject("user", targetUser);
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
+        mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
         boolean isMyProfile = user.equals(targetUser);
         mv.addObject("myProfile", isMyProfile);  
         boolean isMyFriend = this.userServiceComposite.checkFriendship(user, targetUser);
@@ -192,7 +199,14 @@ public class UserController {
             }
         }
         
-        Collections.sort(posts, Collections.reverseOrder());
+        // TODO: Fix this, doesn't sort
+        Collections.sort(posts, new Comparator<PostEntity>() {
+            @Override
+            public int compare(PostEntity p1, PostEntity p2) {
+                return -(p1.getDate().compareTo(p2.getDate()));
+            }
+        });
+        
         mv.addObject("posts", posts);
         
         return mv;

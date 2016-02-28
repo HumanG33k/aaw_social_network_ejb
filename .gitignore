@@ -21,3 +21,5 @@ hs_err_pid*
 /AAW_Project_EJB/AAW_Project_EJB-ejb/dist/
 /AAW_Project_EJB/AAW_Project_EJB-war/dist/
 /AAW_Project_EJB/dist/
+/AAW_Project_EJB/AAW_Project_EJB-ejb/nbproject/
+/AAW_Project_EJB/AAW_Project_EJB-war/nbproject/

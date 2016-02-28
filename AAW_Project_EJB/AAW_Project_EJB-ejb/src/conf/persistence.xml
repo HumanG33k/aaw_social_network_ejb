@@ -6,6 +6,7 @@
     <class>dao.NotificationEntity</class>
     <class>dao.PostEntity</class>
     <class>dao.UserEntity</class>
+    <class>dao.MessageEntity</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

@@ -42,6 +42,10 @@ public class UserEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
     private List<PostEntity> targetPosts = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
+    private List<MessageEntity> senderMessages = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
+    private List<MessageEntity> targetMessages = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
     private List<NotificationEntity> senderNotifs = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
     private List<NotificationEntity> targetNotifs = new ArrayList<>();
@@ -71,6 +75,22 @@ public class UserEntity implements Serializable {
     
     public void removeTargetPost(PostEntity post) {
         this.targetPosts.remove(post);
+    }
+    
+    public void addSenderMessage(MessageEntity message) {
+        this.senderMessages.add(message);
+    }
+    
+    public void removeSenderMessage(MessageEntity message) {
+        this.senderMessages.remove(message);
+    }
+    
+    public void addTargetMessage(MessageEntity message) {
+        this.targetMessages.add(message);
+    }
+    
+    public void removeTargetMessage(MessageEntity message) {
+        this.targetMessages.remove(message);
     }
     
     public void addSenderNotif(NotificationEntity notif) {
@@ -145,6 +165,10 @@ public class UserEntity implements Serializable {
     public void setSenderPosts(List<PostEntity> senderPosts) { this.senderPosts = senderPosts; }
     public List<PostEntity> getTargetPosts() { return targetPosts; }
     public void setTargetPosts(List<PostEntity> targetPosts) { this.targetPosts = targetPosts; }
+    public List<MessageEntity> getSenderMessages() { return senderMessages; }
+    public void setSenderMessages(List<MessageEntity> senderMessages) { this.senderMessages = senderMessages; }
+    public List<MessageEntity> getTargetMessages() { return targetMessages; }
+    public void setTargetMessages(List<MessageEntity> targetMessages) { this.targetMessages = targetMessages; }
     public List<NotificationEntity> getSenderNotifs() { return senderNotifs; }
     public void setSenderNotifs(List<NotificationEntity> senderNotifs) { this.senderNotifs = senderNotifs; }
     public List<NotificationEntity> getTargetNotifs() { return targetNotifs; }
