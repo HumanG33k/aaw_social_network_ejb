@@ -5,6 +5,7 @@
  */
 package service;
 
+import dao.FileEntity;
 import dao.PostDaoLocal;
 import dao.PostEntity;
 import dao.UserDaoLocal;
@@ -26,8 +27,8 @@ public class PostService implements PostServiceLocal {
     UserDaoLocal userDao;
 
     @Override
-    public void add(String content, UserEntity sender, UserEntity target) {
-        PostEntity post = new PostEntity(content, sender, target);
+    public void add(String content, UserEntity sender, UserEntity target, FileEntity file) {
+        PostEntity post = new PostEntity(content, sender, target, file);
         post.setId(this.postDao.save(post));
         sender.addSenderPost(post);
         this.userDao.update(sender);

@@ -40,14 +40,18 @@ public class PostEntity implements Serializable, Comparable<PostEntity>  {
     @Column
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date datePost;
+    @ManyToOne
+    @JoinColumn(name = "fileId")
+    private FileEntity file;
 
     public PostEntity() {}
 
-    public PostEntity(String content, UserEntity sender, UserEntity target) {
+    public PostEntity(String content, UserEntity sender, UserEntity target, FileEntity file) {
         this.content = content;
         this.sender = sender;
         this.target = target;
         this.datePost = new Date();
+        this.file = file;
     }
 
     @Override
@@ -89,6 +93,8 @@ public class PostEntity implements Serializable, Comparable<PostEntity>  {
     public void setSender(UserEntity sender) { this.sender = sender; }
     public UserEntity getTarget() { return target; }
     public void setTarget(UserEntity target) { this.target = target; }
-    public Date getDate() { return this.datePost; }
+    public Date getDate() { return datePost; }
     public void setDate(Date datePost) { this.datePost = datePost; }
+    public FileEntity getFile() { return file; }
+    public void setFile(FileEntity file) { this.file = file; }
 }

@@ -43,7 +43,6 @@
                     </c:forEach>
                 </c:otherwise>
             </c:choose>
-            
         </div>
 
         <%@ include file="../fragments/_footer.jsp" %>

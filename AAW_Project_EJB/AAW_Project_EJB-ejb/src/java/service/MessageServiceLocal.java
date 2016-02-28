@@ -5,6 +5,7 @@
  */
 package service;
 
+import dao.FileEntity;
 import dao.MessageEntity;
 import dao.UserEntity;
 import java.util.List;
@@ -16,7 +17,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface MessageServiceLocal {
-    public void add(String content, UserEntity sender, UserEntity target);
+    public void add(String content, UserEntity sender, UserEntity target, FileEntity file);
     public void remove(MessageEntity message);
     public MessageEntity findById(Long id);
     public List<MessageEntity> searchBySenderTarget(UserEntity sender, UserEntity target);

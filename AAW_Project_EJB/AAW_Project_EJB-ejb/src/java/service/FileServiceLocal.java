@@ -6,7 +6,6 @@
 package service;
 
 import dao.FileEntity;
-import dao.PostEntity;
 import dao.UserEntity;
 import javax.ejb.Local;
 
@@ -15,8 +14,8 @@ import javax.ejb.Local;
  * @author Nath
  */
 @Local
-public interface PostServiceLocal {
-    public void add(String content, UserEntity sender, UserEntity target, FileEntity file);
-    public void remove(PostEntity post);
-    public PostEntity findById(Long id);
+public interface FileServiceLocal {
+    public void add(String name, String type, byte[] content, UserEntity owner);
+    public void remove(FileEntity file);
+    public FileEntity findById(Long id);
 }

@@ -5,6 +5,7 @@
  */
 package service;
 
+import dao.FileEntity;
 import dao.MessageDaoLocal;
 import dao.MessageEntity;
 import dao.UserDaoLocal;
@@ -27,8 +28,8 @@ public class MessageService implements MessageServiceLocal {
     UserDaoLocal userDao;
 
     @Override
-    public void add(String content, UserEntity sender, UserEntity target) {
-        MessageEntity message = new MessageEntity(content, sender, target);
+    public void add(String content, UserEntity sender, UserEntity target, FileEntity file) {
+        MessageEntity message = new MessageEntity(content, sender, target, file);
         message.setId(this.messageDao.save(message));
         sender.addSenderMessage(message);
         this.userDao.update(sender);

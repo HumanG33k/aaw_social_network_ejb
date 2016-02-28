@@ -49,6 +49,8 @@ public class UserEntity implements Serializable {
     private List<NotificationEntity> senderNotifs = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "target")
     private List<NotificationEntity> targetNotifs = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    private List<FileEntity> files = new ArrayList<>();
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UserEntity> friends = new ArrayList<>();
 
@@ -107,6 +109,14 @@ public class UserEntity implements Serializable {
     
     public void removeTargetNotif(NotificationEntity notif) {
         this.targetNotifs.remove(notif);
+    }
+    
+    public void addFile(FileEntity file) {
+        this.files.add(file);
+    }
+    
+    public void removeFile(FileEntity file) {
+        this.files.remove(file);
     }
     
     public boolean addFriend(UserEntity friend) {
@@ -173,6 +183,8 @@ public class UserEntity implements Serializable {
     public void setSenderNotifs(List<NotificationEntity> senderNotifs) { this.senderNotifs = senderNotifs; }
     public List<NotificationEntity> getTargetNotifs() { return targetNotifs; }
     public void setTargetNotifs(List<NotificationEntity> targetNotifs) { this.targetNotifs = targetNotifs; }
+    public List<FileEntity> getFiles() { return files; }
+    public void setFiles(List<FileEntity> files) { this.files = files; }
     public List<UserEntity> getFriends() { return friends; }
     public void setFriends(List<UserEntity> friends) { this.friends = friends; }
 }

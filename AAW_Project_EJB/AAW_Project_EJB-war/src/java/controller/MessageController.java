@@ -95,7 +95,7 @@ public class MessageController {
             Long sessionUserId = (Long)session.getAttribute("userId");
             UserEntity sender = this.userService.findById(sessionUserId);
             UserEntity target = this.userService.findById(userId);
-            this.messageService.add(content, sender, target);
+            this.messageService.add(content, sender, target, null);
         }
         
         return new ModelAndView("redirect:" + session.getAttribute("currentPage"));

@@ -24,8 +24,8 @@ public class MessageEntity extends PostEntity implements Serializable {
     
     public MessageEntity() {}
     
-    public MessageEntity(String content, UserEntity sender, UserEntity target) {
-        super(content, sender, target);
+    public MessageEntity(String content, UserEntity sender, UserEntity target, FileEntity file) {
+        super(content, sender, target, file);
         this.isSeen = false;
     }
     
