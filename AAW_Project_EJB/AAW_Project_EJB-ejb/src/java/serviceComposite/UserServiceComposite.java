@@ -6,11 +6,17 @@
 package serviceComposite;
 
 import common.Enums.SignInResult;
+import dao.FileEntity;
 import dao.UserDaoLocal;
 import dao.UserEntity;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import service.FileServiceLocal;
 
 /**
  *
@@ -21,6 +27,8 @@ import org.springframework.stereotype.Component;
 public class UserServiceComposite implements UserServiceCompositeLocal {
     @EJB
     UserDaoLocal userDao;
+    @EJB
+    FileServiceLocal fileService;
     
     @Override
     public boolean checkFriendship(UserEntity user, UserEntity friend) {
@@ -63,5 +71,17 @@ public class UserServiceComposite implements UserServiceCompositeLocal {
     public void updateInfo(UserEntity user, String newInfo) {
         user.setInformation(newInfo);
         this.userDao.update(user);
+    }
+    
+    @Override
+    public void updateProfilePicture(UserEntity user, MultipartFile file) {
+        FileEntity oldProfilePicture = this.fileService.findProfilePicture(user);
+        if(oldProfilePicture != null) {
+            this.fileService.remove(oldProfilePicture);
+        }
+        try {
+            this.fileService.add(file.getOriginalFilename(), file.getContentType(),
+                    file.getBytes(), user, true);
+        } catch (IOException e) {}
     }
 }

@@ -50,7 +50,15 @@
                                 <div>
                                     <c:choose>
                                         <c:when test="${file.getType().startsWith('image')}">
-                                            <i class="fi-photo size-60"></i>
+                                            <div class="thumbnail">
+                                                <img src="${pageContext.request.contextPath}/${file.getId()}/showFile.htm" class="profile_picture">
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${file.getType().startsWith('video')}">
+                                            <i class="fi-play-video size-60"></i>
+                                        </c:when>
+                                        <c:when test="${file.getType().equals('application/pdf')}">
+                                            <i class="fi-page-pdf size-60"></i>
                                         </c:when>
                                         <c:otherwise>
                                             <i class="fi-page size-60"></i>
@@ -59,8 +67,9 @@
                                 </div>
                             </div>
                             <div class="media-object-section">
-                                <a class="size-36" href="<%=request.getContextPath()%>/${file.getId()}/downloadFile.htm" class="margin-bottom-1 text-left">${file.getName()}</a>
-                                <a class="size-24" style="color: red; font-weight: bold" href="<%=request.getContextPath()%>/${file.getId()}/removeFile.htm">X</a>
+                                <a class="size-24" href="<%=request.getContextPath()%>/${file.getId()}/showFile.htm" class="margin-bottom-1 text-left">${file.getName()}</a><br/>
+                                <a class="size-24 fi-download" style="color: black; font-weight: bold" href="<%=request.getContextPath()%>/${file.getId()}/downloadFile.htm"></a>&nbsp
+                                <a class="size-24 fi-x" style="color: red; font-weight: bold" href="<%=request.getContextPath()%>/${file.getId()}/removeFile.htm"></a>
                             </div>
                         </div>
                     </c:forEach>

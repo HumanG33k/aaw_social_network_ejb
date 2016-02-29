@@ -17,8 +17,9 @@
     <body>
         <%@ include file="../fragments/_header.jsp" %>
         
-        <div class="primary callout text-center size-36">
-            <p>${user.getName()} profile</p>
+        <div class="primary callout text-center size-60">
+            <img style="max-width: 150px; max-height: 150px" src="${pageContext.request.contextPath}/${user.getId()}/showProfilePicture.htm">&nbsp;
+            ${user.getName()} profile
         </div>
        
         
@@ -29,6 +30,10 @@
                         Public information :
                         <input name="infoInput" value="${user.getInformation()}">
                         <button type="submit" class="button success">Save</button>
+                    </form>
+                    <form method="post" action="${pageContext.request.contextPath}/updateProfilePicture.htm" enctype="multipart/form-data">
+                        <input style="width: 400px" type="file" class="text-center size-21" name="profilePicture">
+                        <button type="submit" class="button success">Update profile picture</button>
                     </form>
                 </c:when>
                 <c:when test="${myFriend == false}">

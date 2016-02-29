@@ -17,4 +17,5 @@ public interface FileDaoLocal {
     public void update(FileEntity file);
     public void delete(FileEntity file);
     public FileEntity findById(Long id);
+    public FileEntity findProfilePicture(UserEntity owner);
 }

@@ -33,7 +33,7 @@
                         <div class="column media-object">
                             <div class="media-object-section left">
                                 <div class="thumbnail ">
-                                    <img src= "resources/img/profile.png" class="profile_picture">
+                                    <img src= "<%=request.getContextPath()%>/${friend.getId()}/showProfilePicture.htm" class="profile_picture">
                                 </div>
                             </div>
                             <div class="media-object-section">

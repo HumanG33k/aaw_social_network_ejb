@@ -7,7 +7,9 @@ package controller;
 
 import dao.FileEntity;
 import dao.MessageEntity;
+import dao.PostEntity;
 import dao.UserEntity;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +80,8 @@ public class MessageController {
             
             mv.addObject("showFriends", false);
             mv.addObject("friend", friend);
-            mv.addObject("messages", messages);
+            mv.addObject("posts", messages);
+            mv.addObject("messages", true);
         }
         
         mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
@@ -94,7 +97,7 @@ public class MessageController {
             return new ModelAndView("index");
         }
         
-        String content = request.getParameter("messageContent");
+        String content = request.getParameter("postContent");
         String fileId = request.getParameter("fileToLink");
         FileEntity file = null;
         if(!fileId.isEmpty()) {

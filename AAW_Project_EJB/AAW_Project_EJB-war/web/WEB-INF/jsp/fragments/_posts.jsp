@@ -1,10 +1,19 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="medium-9 medium-centered columns">
     <div class="row">
         <div class="column text-center medium-1">
-            <img src= "${pageContext.request.contextPath}/resources/img/profile.png" >
+            <img src= "${pageContext.request.contextPath}/${currentUser.getId()}/showProfilePicture.htm">
         </div>
 
-        <form method="post" action="${pageContext.request.contextPath}/${userId}/createPost.htm">
+        <c:choose>
+            <c:when test="${messages == true}">
+                <form method="post" action="${pageContext.request.contextPath}/${userId}/createMessage.htm">
+            </c:when>
+            <c:otherwise>
+                <form method="post" action="${pageContext.request.contextPath}/${userId}/createPost.htm">
+            </c:otherwise>
+        </c:choose>
             <div class="large-7 columns">
                 <label>
                     <input type="text" placeholder="Express yourself" name="postContent">
@@ -33,7 +42,14 @@
         <c:choose>
             <c:when test="${posts.size() == 0}">
                 <div class="text-center">
-                    No posts to show.
+                    <c:choose>
+                        <c:when test="${messages == true}">
+                            No messages to show.
+                        </c:when>
+                        <c:otherwise>
+                            No posts to show.
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </c:when>
             <c:otherwise>
@@ -41,12 +57,12 @@
                     <article class="column media-object">
                         <div class="media-object-section left">
                             <div class="thumbnail">
-                                <img src= "${pageContext.request.contextPath}/resources/img/profile.png" class="profile_picture">
+                                <img src= "${pageContext.request.contextPath}/${post.getSender().getId()}/showProfilePicture.htm" class="profile_picture">
                             </div>
                         </div>
                         <div class="media-object-section">
                             <a class="size-21" href="<%=request.getContextPath()%>/${post.getSender().getId()}/profile.htm">${post.getSender().getName()}</a>
-                            <c:if test="${post.getSender() != post.getTarget()}">
+                            <c:if test="${post.getSender() != post.getTarget() && messages == false}">
                                 => 
                                 <a class="size-21" href="<%=request.getContextPath()%>/${post.getTarget().getId()}/profile.htm">${post.getTarget().getName()}</a>
                             </c:if>
@@ -55,10 +71,21 @@
                                 <a class="size-12" style="color: red; font-weight: bold" href="<%=request.getContextPath()%>/${post.getId()}/removePost.htm">Remove</a>
                             </c:if>
                             <div>
+                                ${post.getContent()}<br/>
                                 <c:if test="${post.getFile() != null}">
-                                    [<a class="size-21" href="<%=request.getContextPath()%>/${post.getFile().getId()}/downloadFile.htm">${post.getFile().getName()}</a>]
+                                    <c:choose>
+                                        <c:when test="${post.getFile().getType().startsWith('image')}">
+                                            <img style="max-height: 500px; max-width: 500px" src="${pageContext.request.contextPath}/${post.getFile().getId()}/showFile.htm">
+                                        </c:when>
+                                        <c:when test="${post.getFile().getType().startsWith('video')}">
+                                            <video controls style="max-height: 500px; max-width: 500px" src="${pageContext.request.contextPath}/${post.getFile().getId()}/showFile.htm">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="size-21" href="<%=request.getContextPath()%>/${post.getFile().getId()}/showFile.htm">${post.getFile().getName()}</a>&nbsp;
+                                            <a class="size-21 fi-download" style="color: black; font-weight: bold" href="<%=request.getContextPath()%>/${post.getFile().getId()}/downloadFile.htm"></a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:if>
-                                ${post.getContent()}
                             </div>
                         </div>
                     </article>

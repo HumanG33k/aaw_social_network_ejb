@@ -35,7 +35,7 @@
                                 <div class="column media-object">
                                     <div class="media-object-section left">
                                         <div class="thumbnail ">
-                                            <img src= "../resources/img/profile.png" class="profile_picture">
+                                            <img src= "<%=request.getContextPath()%>/${friend.getId()}/showProfilePicture.htm" class="profile_picture">
                                         </div>
                                     </div>
                                     <div class="media-object-section">
@@ -58,72 +58,9 @@
                 <div class="primary callout text-center size-36">
                     <p>Messages with ${friend.getName()}</p>
                 </div>
-                
-                <div class="medium-9 medium-centered columns">
-                    <div class="row">
-                        <div class="column text-center medium-1">
-                            <img src= "${pageContext.request.contextPath}/resources/img/profile.png" >
-                        </div>
 
-                        <form method="post" action="${pageContext.request.contextPath}/${userId}/createMessage.htm">
-                            <div class="large-7 columns">
-                                <label>
-                                    <input type="text" placeholder="Express yourself" name="messageContent">
-                                </label>
-                            </div>
-                            <div class="large-4 columns">
-                                <label>
-                                    <select name="fileToLink">
-                                        <option value="">Select a file</option>
-                                        <c:forEach var="file" items="${files}">
-                                            <option value="${file.getId()}">${file.getName()}</option>
-                                        </c:forEach>
-                                    </select>
-                                </label>
-                            </div>
+                <%@ include file="../fragments/_posts.jsp" %>
 
-                            <div class="column">
-                                <button type="submit" class="button expanded">Send a private message</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <hr/>
-                <div class="rows ">
-                    <div class="row small-uncollapse large-collapse">
-                        <c:choose>
-                            <c:when test="${messages.size() == 0}">
-                                <div class="text-center">
-                                    No messages to show.
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="message" items="${messages}">
-                                    <article class="column media-object">
-                                        <div class="media-object-section left">
-                                            <div class="thumbnail">
-                                                <img src= "${pageContext.request.contextPath}/resources/img/profile.png" class="profile_picture">
-                                            </div>
-                                        </div>
-                                        <div class="media-object-section">
-                                            <a class="size-21" href="<%=request.getContextPath()%>/${message.getSender().getId()}/profile.htm">${message.getSender().getName()}</a>
-                                            <span class="size-12">(${message.getDate()})</span>
-                                            <c:if test="${message.getSender() == currentUser}">
-                                                <a class="size-12" style="color: red; font-weight: bold" href="<%=request.getContextPath()%>/${message.getId()}/removeMessage.htm">Remove</a>
-                                            </c:if>
-                                            <div>
-                                                <c:if test="${message.getFile() != null}">
-                                                    [<a class="size-21" href="<%=request.getContextPath()%>/${message.getFile().getId()}/downloadFile.htm">${message.getFile().getName()}</a>]
-                                                </c:if>
-                                                ${message.getContent()}
-                                            </div>
-                                        </div>
-                                    </article>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
             </c:otherwise>
         </c:choose>
         

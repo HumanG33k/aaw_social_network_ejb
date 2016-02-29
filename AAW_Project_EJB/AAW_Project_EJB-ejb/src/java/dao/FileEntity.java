@@ -36,6 +36,8 @@ public class FileEntity implements Serializable {
     private String type;
     @Column
     private byte[] content;
+    @Column
+    private boolean isProfilePicture;
     @ManyToOne
     @JoinColumn(name = "ownerId")
     private UserEntity owner;
@@ -44,11 +46,12 @@ public class FileEntity implements Serializable {
     
     public FileEntity() {}
 
-    public FileEntity(String name, String type, byte[] content, UserEntity owner) {
+    public FileEntity(String name, String type, byte[] content, UserEntity owner, boolean isProfilePicture) {
         this.name = name;
         this.type = type;
         this.content = content;
         this.owner = owner;
+        this.isProfilePicture = isProfilePicture;
     }
     
     public void addPost(PostEntity post) {
@@ -95,6 +98,8 @@ public class FileEntity implements Serializable {
     public void setContent(byte[] content) { this.content = content; }
     public UserEntity getOwner() { return owner; }
     public void setOwner(UserEntity owner) { this.owner = owner; }
+    public boolean isIsProfilePicture() { return isProfilePicture; }
+    public void setIsProfilePicture(boolean isProfilePicture) { this.isProfilePicture = isProfilePicture; }
     public List<PostEntity> getLinkedPosts() { return linkedPosts; }
     public void setLinkedPosts(List<PostEntity> linkedPosts) { this.linkedPosts = linkedPosts; }
 }

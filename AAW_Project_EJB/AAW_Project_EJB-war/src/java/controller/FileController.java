@@ -81,7 +81,7 @@ public class FileController {
             String type = file.getContentType();
             try {
                 byte[] content = file.getBytes();
-                this.fileService.add(name, type, content, user);
+                this.fileService.add(name, type, content, user, false);
                 mv.addObject("uploadMessage", "Your file " + name + " has been successfully uploaded.");
             } catch (Exception e) {
                 mv.addObject("uploadMessage", e.getMessage());
@@ -143,5 +143,33 @@ public class FileController {
         }
         
         return null;
+    }
+    
+    @RequestMapping(value = "{fileId}/showFile", method = RequestMethod.GET)
+    public void getImageContent(HttpServletRequest request, HttpServletResponse response, @PathVariable Long fileId) {
+        FileEntity file = this.fileService.findById(fileId);
+        if(file != null) {
+            try {
+                byte[] content = file.getContent();
+                response.setContentType(file.getType());
+                response.setContentLength(content.length);
+                response.getOutputStream().write(content);
+            } catch (IOException e) {}
+        }
+    }
+    
+    @RequestMapping(value = "{userId}/showProfilePicture", method = RequestMethod.GET)
+    public void getProfilePicture(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) {
+        
+        UserEntity user = this.userService.findById(userId);
+        FileEntity profilePicture = this.fileService.findProfilePicture(user);
+        if(profilePicture != null) {
+            try {
+                byte[] content = profilePicture.getContent();
+                response.setContentType(profilePicture.getType());
+                response.setContentLength(content.length);
+                response.getOutputStream().write(content);
+            } catch (IOException e) {}
+        }
     }
 }

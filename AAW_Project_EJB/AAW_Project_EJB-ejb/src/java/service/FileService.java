@@ -26,8 +26,8 @@ public class FileService implements FileServiceLocal {
     UserDaoLocal userDao;
 
     @Override
-    public void add(String name, String type, byte[] content, UserEntity owner) {
-        FileEntity file = new FileEntity(name, type, content, owner);
+    public void add(String name, String type, byte[] content, UserEntity owner, boolean isProfilePicture) {
+        FileEntity file = new FileEntity(name, type, content, owner, isProfilePicture);
         file.setId(this.fileDao.save(file));
         owner.addFile(file);
         this.userDao.update(owner);
@@ -46,5 +46,10 @@ public class FileService implements FileServiceLocal {
     @Override
     public FileEntity findById(Long id) {
         return this.fileDao.findById(id);
+    }
+    
+    @Override
+    public FileEntity findProfilePicture(UserEntity owner) {
+        return this.fileDao.findProfilePicture(owner);
     }
 }

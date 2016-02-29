@@ -14,7 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import service.FileServiceLocal;
 import service.NotificationServiceLocal;
 import service.PostServiceLocal;
 import service.UserServiceLocal;
@@ -35,6 +38,8 @@ public class UserController {
     NotificationServiceLocal notifService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostService")
     PostServiceLocal postService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/FileService")
+    FileServiceLocal fileService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/MessageServiceComposite")
     MessageServiceCompositeLocal messageServiceComposite;
 
@@ -176,6 +181,7 @@ public class UserController {
         mv.addObject("myProfile", isMyProfile);  
         boolean isMyFriend = this.userServiceComposite.checkFriendship(user, targetUser);
         mv.addObject("myFriend", isMyFriend);
+        mv.addObject("messages", false);
         
         if(!isMyProfile && !isMyFriend) {
             NotificationEntity sentRequest = this.notifService.searchBySenderTarget(user, targetUser);
@@ -244,5 +250,21 @@ public class UserController {
         }
 
         return new ModelAndView("redirect:profile.htm");
+    }
+    
+    @RequestMapping(value = "updateProfilePicture", method = RequestMethod.POST)
+    public ModelAndView handleProfilePicture(HttpServletRequest request, @RequestParam("profilePicture") MultipartFile file) {
+        HttpSession session = request.getSession();
+        if(session == null || !request.isRequestedSessionIdValid()) {
+            return new ModelAndView("index");
+        }
+
+        Long sessionUserId = (Long)session.getAttribute("userId");
+        if (!file.isEmpty() && file.getContentType().startsWith("image")) {
+            UserEntity user = this.userService.findById(sessionUserId);
+            this.userServiceComposite.updateProfilePicture(user, file);
+        }
+
+        return new ModelAndView("redirect:/" + sessionUserId + "/profile.htm");
     }
 }

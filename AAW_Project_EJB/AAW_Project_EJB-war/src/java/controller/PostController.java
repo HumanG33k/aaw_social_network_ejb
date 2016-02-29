@@ -83,6 +83,7 @@ public class PostController {
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
         mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
         mv.addObject("files", user.getFiles());
+        mv.addObject("messages", false);
         
         return mv;
     }

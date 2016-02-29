@@ -8,6 +8,7 @@ package serviceComposite;
 import common.Enums.SignInResult;
 import dao.UserEntity;
 import javax.ejb.Local;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -20,4 +21,5 @@ public interface UserServiceCompositeLocal {
     public boolean removeFriendship(UserEntity user, UserEntity friend);
     public SignInResult checkSignIn(String name, String password);
     public void updateInfo(UserEntity user, String newInfo);
+    public void updateProfilePicture(UserEntity user, MultipartFile file);
 }

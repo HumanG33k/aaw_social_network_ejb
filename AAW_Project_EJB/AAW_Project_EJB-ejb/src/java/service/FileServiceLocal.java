@@ -15,7 +15,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface FileServiceLocal {
-    public void add(String name, String type, byte[] content, UserEntity owner);
+    public void add(String name, String type, byte[] content, UserEntity owner, boolean isProfilePicture);
     public void remove(FileEntity file);
     public FileEntity findById(Long id);
+    public FileEntity findProfilePicture(UserEntity owner);
 }
