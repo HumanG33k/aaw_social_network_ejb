@@ -51,6 +51,14 @@ public class FileEntity implements Serializable {
         this.owner = owner;
     }
     
+    public void addPost(PostEntity post) {
+        this.linkedPosts.add(post);
+    }
+    
+    public void removePost(PostEntity post) {
+        this.linkedPosts.remove(post);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

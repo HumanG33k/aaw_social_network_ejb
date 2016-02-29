@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.FileEntity;
 import dao.PostEntity;
 import dao.UserEntity;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import service.FileServiceLocal;
 import service.NotificationServiceLocal;
 import service.PostServiceLocal;
 import service.UserServiceLocal;
@@ -35,6 +37,8 @@ public class PostController {
     UserServiceLocal userService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/NotificationService")
     NotificationServiceLocal notifService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/FileService")
+    FileServiceLocal fileService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/MessageServiceComposite")
     MessageServiceCompositeLocal messageServiceComposite;
 
@@ -78,12 +82,13 @@ public class PostController {
         mv.addObject("posts", tempPosts);
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
         mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
+        mv.addObject("files", user.getFiles());
         
         return mv;
     }
     
     // Method used to handle the creation of a new post
-    @RequestMapping(value="{userId}/createPost", method=RequestMethod.POST, params="postContent")
+    @RequestMapping(value="{userId}/createPost", method=RequestMethod.POST)
     public ModelAndView handleAddPost(HttpServletRequest request, @PathVariable Long userId) {
         HttpSession session = request.getSession();
         if(session == null || !request.isRequestedSessionIdValid()) {
@@ -91,12 +96,17 @@ public class PostController {
         }
         
         String content = request.getParameter("postContent");
+        String fileId = request.getParameter("fileToLink");
+        FileEntity file = null;
+        if(!fileId.isEmpty()) {
+            file = this.fileService.findById(Long.parseLong(fileId));
+        }
         
         if(!content.isEmpty()) {
             Long sessionUserId = (Long)session.getAttribute("userId");
             UserEntity sender = this.userService.findById(sessionUserId);
             UserEntity target = this.userService.findById(userId);
-            this.postService.add(content, sender, target, null);
+            this.postService.add(content, sender, target, file);
         }
         
         return new ModelAndView("redirect:" + session.getAttribute("currentPage"));

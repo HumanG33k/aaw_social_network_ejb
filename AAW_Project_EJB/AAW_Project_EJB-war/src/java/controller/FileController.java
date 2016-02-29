@@ -1,8 +1,10 @@
 package controller;
 
 import dao.FileEntity;
+import dao.PostEntity;
 import dao.UserEntity;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import service.FileServiceLocal;
+import service.PostServiceLocal;
 import service.UserServiceLocal;
 import serviceComposite.UserServiceCompositeLocal;
 import serviceComposite.MessageServiceCompositeLocal;
@@ -30,6 +33,8 @@ import serviceComposite.MessageServiceCompositeLocal;
 public class FileController {
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/FileService")
     FileServiceLocal fileService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostService")
+    PostServiceLocal postService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserService")
     UserServiceLocal userService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserServiceComposite")
@@ -105,6 +110,11 @@ public class FileController {
         mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
         
         FileEntity file = this.fileService.findById(fileId);
+        List<PostEntity> linkedPosts = file.getLinkedPosts();
+        while(linkedPosts.size() > 0) {
+            this.postService.remove(linkedPosts.get(0));
+        }
+        
         String fileName = file.getName();
         this.fileService.remove(file);
         user = this.userService.findById(sessionUserId);

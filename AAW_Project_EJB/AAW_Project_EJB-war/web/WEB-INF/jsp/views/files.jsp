@@ -34,15 +34,6 @@
             </div>
         </div>
 
-        <!-- 
-        .fi-archive 
-        .fi-book
-        .fi-download
-        .fi-folder
-        .fi-photo
-        .fi-play-video
-        .fi-page
-        -->
         <hr/>
         
         <div class="row small-up-1 medium-up-2 large-up-4">

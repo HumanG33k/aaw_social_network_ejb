@@ -171,6 +171,7 @@ public class UserController {
         mv.addObject("user", targetUser);
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
         mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
+        mv.addObject("files", user.getFiles());
         boolean isMyProfile = user.equals(targetUser);
         mv.addObject("myProfile", isMyProfile);  
         boolean isMyFriend = this.userServiceComposite.checkFriendship(user, targetUser);

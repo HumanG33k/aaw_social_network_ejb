@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.FileEntity;
 import dao.MessageEntity;
 import dao.UserEntity;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import service.FileServiceLocal;
 import service.MessageServiceLocal;
 import service.UserServiceLocal;
 import serviceComposite.MessageServiceCompositeLocal;
@@ -30,6 +32,8 @@ import serviceComposite.MessageServiceCompositeLocal;
 public class MessageController {
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/MessageService")
     MessageServiceLocal messageService;
+    @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/FileService")
+    FileServiceLocal fileService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/UserService")
     UserServiceLocal userService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/MessageServiceComposite")
@@ -50,6 +54,7 @@ public class MessageController {
         ModelAndView mv = new ModelAndView("messages");
         mv.addObject("currentUser", user);
         mv.addObject("nbNotifs", user.getTargetNotifs().size());
+        mv.addObject("files", user.getFiles());
         
         if(userId == 0) {
             mv.addObject("showFriends", true);
@@ -82,7 +87,7 @@ public class MessageController {
     }
     
     // Method used to handle the creation of a new message
-    @RequestMapping(value="{userId}/createMessage", method=RequestMethod.POST, params="messageContent")
+    @RequestMapping(value="{userId}/createMessage", method=RequestMethod.POST)
     public ModelAndView handleAddMessage(HttpServletRequest request, @PathVariable Long userId) {
         HttpSession session = request.getSession();
         if(session == null || !request.isRequestedSessionIdValid()) {
@@ -90,12 +95,17 @@ public class MessageController {
         }
         
         String content = request.getParameter("messageContent");
+        String fileId = request.getParameter("fileToLink");
+        FileEntity file = null;
+        if(!fileId.isEmpty()) {
+            file = this.fileService.findById(Long.parseLong(fileId));
+        }
         
         if(!content.isEmpty()) {
             Long sessionUserId = (Long)session.getAttribute("userId");
             UserEntity sender = this.userService.findById(sessionUserId);
             UserEntity target = this.userService.findById(userId);
-            this.messageService.add(content, sender, target, null);
+            this.messageService.add(content, sender, target, file);
         }
         
         return new ModelAndView("redirect:" + session.getAttribute("currentPage"));

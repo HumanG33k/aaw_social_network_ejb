@@ -66,9 +66,19 @@
                         </div>
 
                         <form method="post" action="${pageContext.request.contextPath}/${userId}/createMessage.htm">
-                            <div class="column medium-11">
+                            <div class="large-7 columns">
                                 <label>
                                     <input type="text" placeholder="Express yourself" name="messageContent">
+                                </label>
+                            </div>
+                            <div class="large-4 columns">
+                                <label>
+                                    <select name="fileToLink">
+                                        <option value="">Select a file</option>
+                                        <c:forEach var="file" items="${files}">
+                                            <option value="${file.getId()}">${file.getName()}</option>
+                                        </c:forEach>
+                                    </select>
                                 </label>
                             </div>
 
@@ -102,6 +112,9 @@
                                                 <a class="size-12" style="color: red; font-weight: bold" href="<%=request.getContextPath()%>/${message.getId()}/removeMessage.htm">Remove</a>
                                             </c:if>
                                             <div>
+                                                <c:if test="${message.getFile() != null}">
+                                                    [<a class="size-21" href="<%=request.getContextPath()%>/${message.getFile().getId()}/downloadFile.htm">${message.getFile().getName()}</a>]
+                                                </c:if>
                                                 ${message.getContent()}
                                             </div>
                                         </div>

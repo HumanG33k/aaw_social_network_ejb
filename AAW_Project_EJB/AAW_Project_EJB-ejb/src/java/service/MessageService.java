@@ -5,6 +5,7 @@
  */
 package service;
 
+import dao.FileDaoLocal;
 import dao.FileEntity;
 import dao.MessageDaoLocal;
 import dao.MessageEntity;
@@ -26,6 +27,8 @@ public class MessageService implements MessageServiceLocal {
     MessageDaoLocal messageDao;
     @EJB
     UserDaoLocal userDao;
+    @EJB
+    FileDaoLocal fileDao;
 
     @Override
     public void add(String content, UserEntity sender, UserEntity target, FileEntity file) {
@@ -35,18 +38,27 @@ public class MessageService implements MessageServiceLocal {
         this.userDao.update(sender);
         target.addTargetMessage(message);
         this.userDao.update(target);
+        if(file != null) {
+            file.addPost(message);
+            this.fileDao.update(file);
+        }
     }
     
     @Override
     public void remove(MessageEntity message) {
         if(this.messageDao.findById(message.getId()) != null) {
-            this.messageDao.delete(message);
             UserEntity sender = message.getSender();
             sender.removeSenderMessage(message);
             this.userDao.update(sender);
             UserEntity target = message.getTarget();
             target.removeTargetMessage(message);
             this.userDao.update(target);
+            FileEntity file = message.getFile();
+            if(file != null) {
+                file.removePost(message);
+                this.fileDao.update(file);
+            }
+            this.messageDao.delete(message);
         }
     }
     
