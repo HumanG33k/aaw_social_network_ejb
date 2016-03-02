@@ -4,6 +4,9 @@ import dao.FileEntity;
 import dao.PostEntity;
 import dao.UserEntity;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +14,7 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -163,13 +167,21 @@ public class FileController {
         
         UserEntity user = this.userService.findById(userId);
         FileEntity profilePicture = this.fileService.findProfilePicture(user);
-        if(profilePicture != null) {
-            try {
-                byte[] content = profilePicture.getContent();
-                response.setContentType(profilePicture.getType());
-                response.setContentLength(content.length);
-                response.getOutputStream().write(content);
-            } catch (IOException e) {}
-        }
+        
+        try {
+            byte[] content;
+            String type;
+            if(profilePicture != null) {
+                content = profilePicture.getContent();
+                type = profilePicture.getType();
+            } else {
+                InputStream stream = request.getServletContext().getResourceAsStream("/resources/img/profile.png");
+                content = IOUtils.toByteArray(stream);
+                type = "image/png";
+            }
+            response.setContentType(type);
+            response.setContentLength(content.length);
+            response.getOutputStream().write(content);
+        } catch (IOException e) {}
     }
 }

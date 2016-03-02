@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/views/profile.jsp</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/src/java/controller/PostController.java</file>
+            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/views/search.jsp</file>
             <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/views/files.jsp</file>
             <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/views/notifications.jsp</file>
             <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/src/java/controller/UserController.java</file>
+            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/src/java/controller/FileController.java</file>
             <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/views/friends.jsp</file>
             <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/fragments/_posts.jsp</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-war/web/WEB-INF/jsp/views/messages.jsp</file>
         </group>
     </open-files>
 </project-private>
