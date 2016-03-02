@@ -5,8 +5,6 @@ import dao.PostEntity;
 import dao.UserEntity;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import service.FileServiceLocal;
 import service.PostServiceLocal;
@@ -34,7 +34,7 @@ import serviceComposite.MessageServiceCompositeLocal;
  * @author Nathanael Villemin
  */
 @Controller
-public class FileController {
+public class FileController implements HandlerExceptionResolver {
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/FileService")
     FileServiceLocal fileService;
     @EJB(mappedName="java:global/AAW_Project_EJB/AAW_Project_EJB-ejb/PostService")
@@ -183,5 +183,28 @@ public class FileController {
             response.setContentLength(content.length);
             response.getOutputStream().write(content);
         } catch (IOException e) {}
+    }
+    
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {        
+        HttpSession session = request.getSession();
+        if(session == null || !request.isRequestedSessionIdValid()) {
+            return new ModelAndView("index");
+        }
+        
+        ModelAndView mv;
+        if (exception instanceof MaxUploadSizeExceededException) {
+            Long sessionUserId = (Long)session.getAttribute("userId");
+            UserEntity user = this.userService.findById(sessionUserId);
+            mv = new ModelAndView("files");
+            mv.addObject("currentUser", user);
+            mv.addObject("nbNotifs", user.getTargetNotifs().size());
+            mv.addObject("nbMessages", this.messageServiceComposite.getNumberUnreadMessages(user));
+            mv.addObject("files", user.getFiles());
+            mv.addObject("uploadMessage", "Error: Your file shoudn't exceed 20MB.");
+        } else {
+            mv = new ModelAndView("redirect:files.htm");
+        }
+        return mv;
     }
 }

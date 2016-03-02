@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-ejb/src/java/dao/UserDao.java</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-ejb/src/java/service/FileService.java</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-ejb/src/java/dao/PostEntity.java</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-ejb/src/java/service/FileServiceLocal.java</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-ejb/src/java/serviceComposite/UserServiceCompositeLocal.java</file>
-            <file>file:/D:/GitHub/aaw_social_network_ejb/AAW_Project_EJB/AAW_Project_EJB-ejb/src/java/serviceComposite/UserServiceComposite.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

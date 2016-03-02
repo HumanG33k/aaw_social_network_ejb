@@ -21,17 +21,13 @@
             <p>Files</p>
         </div>
         
-        <h5 class="text-center" name="uploadMessage">${uploadMessage}</h5>
+        <h5 class="text-center" name="uploadMessage"><i><b>${uploadMessage}</b></i></h5>
 
-        <div class="medium-9 medium-centered columns">
-            <div class="row">
-                <form method="post" action="${pageContext.request.contextPath}/${userId}/uploadFile.htm" enctype="multipart/form-data">
-                    <div class="column">
-                        <input type="file" class="text-center" name="fileToUpload">
-                        <button type="submit" class="button expanded">Upload file</button>
-                    </div>
-                </form>
-            </div>
+        <div class="text-center size-21">
+            <form method="post" action="${pageContext.request.contextPath}/${userId}/uploadFile.htm" enctype="multipart/form-data">
+                <input style="width: 400px" type="file" class="text-center" name="fileToUpload">
+                <button type="submit" class="button">Upload file</button>
+            </form>
         </div>
 
         <hr/>

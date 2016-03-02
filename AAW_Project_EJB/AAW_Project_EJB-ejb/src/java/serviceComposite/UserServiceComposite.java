@@ -78,6 +78,7 @@ public class UserServiceComposite implements UserServiceCompositeLocal {
         FileEntity oldProfilePicture = this.fileService.findProfilePicture(user);
         if(oldProfilePicture != null) {
             this.fileService.remove(oldProfilePicture);
+            user = this.userDao.findById(user.getId());
         }
         try {
             this.fileService.add(file.getOriginalFilename(), file.getContentType(),

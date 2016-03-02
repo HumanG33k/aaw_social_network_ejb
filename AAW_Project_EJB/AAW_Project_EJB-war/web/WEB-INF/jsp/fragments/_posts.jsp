@@ -31,7 +31,14 @@
             </div>
 
             <div class="column">
-                <button type="submit" class="button expanded">Send a public message</button>
+                <c:choose>
+                    <c:when test="${messages == true}">
+                        <button type="submit" class="button expanded">Send a private message</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="submit" class="button expanded">Send a public message</button>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </form>
     </div>
@@ -67,7 +74,7 @@
                                 <a class="size-21" href="<%=request.getContextPath()%>/${post.getTarget().getId()}/profile.htm">${post.getTarget().getName()}</a>
                             </c:if>
                             <span class="size-12">(${post.getDate()})</span>
-                            <c:if test="${post.getSender() == currentUser || post.getTarget() == currentUser}">
+                            <c:if test="${post.getSender() == currentUser || (post.getTarget() == currentUser && messages == false)}">
                                 <a class="size-12" style="color: red; font-weight: bold" href="<%=request.getContextPath()%>/${post.getId()}/removePost.htm">Remove</a>
                             </c:if>
                             <div>
